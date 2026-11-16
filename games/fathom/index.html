@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0d1117">
+  <title>Fathom</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="view" aria-label="Fathom trench"></canvas>
+  <div id="vignette"></div>
+  <a id="home" class="corner" href="../../index.html">All games</a>
+
+  <header id="hud" hidden>
+    <div class="brand">fathom <span>/ trench</span></div>
+    <div class="meters">
+      <span>depth <b id="depth">0 m</b></span>
+    </div>
+    <button id="pauseBtn" class="ghost" type="button" aria-pressed="false">Pause</button>
+  </header>
+
+  <section id="title" class="overlay">
+    <div class="card">
+      <p class="eyebrow">3D trench</p>
+      <h1>Fathom</h1>
+      <p class="sub">Research lamp</p>
+      <p class="lead">Drop a glass lamp into a dark trench. Steer it through the marine snow and watch the depth climb.</p>
+      <ul class="howto">
+        <li><kbd>A</kbd> <kbd>D</kbd> or the arrow keys slide the lamp. <kbd>W</kbd> <kbd>S</kbd> move it in and out of the trench.</li>
+        <li>On a touch screen, drag the stick.</li>
+        <li><kbd>P</kbd> or <kbd>Esc</kbd> pauses. <kbd>R</kbd> starts the dive again.</li>
+      </ul>
+      <button id="start" type="button">Drop the lamp</button>
+      <p class="credit"><a href="../../index.html">All games</a></p>
+    </div>
+  </section>
+
+  <p id="hint" class="hint hidden">Steer with WASD or the arrows</p>
+
+  <div id="touch">
+    <div id="stick" aria-label="Steer">
+      <div id="nub"></div>
+    </div>
+  </div>
+
+  <section id="pause" class="overlay hidden">
+    <div class="card">
+      <p class="eyebrow">paused</p>
+      <h1>Lamp held</h1>
+      <p class="lead">The trench is frozen. Resume the dive, or start again from the surface.</p>
+      <div class="pause-actions">
+        <button id="resume" type="button">Resume</button>
+        <button id="restart" class="ghost" type="button">Restart</button>
+        <a href="../../index.html">All games</a>
+      </div>
+    </div>
+  </section>
+
+  <p id="fail" class="fail hidden">This browser has no WebGL context, so Fathom cannot start. <a href="../../index.html">All games</a></p>
+
+  <script src="../../shared/vendor/three.min.js"></script>
+  <script src="../../shared/bloom.js"></script>
+  <script src="../../shared/juice.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
