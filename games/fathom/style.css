@@ -304,7 +304,7 @@ button.ghost:hover { background: #1c2128; }
   position: fixed;
   left: 12px;
   right: 12px;
-  bottom: calc(18px + env(safe-area-inset-bottom));
+  top: calc(62px + env(safe-area-inset-top));
   z-index: 4;
   margin: 0;
   text-align: center;
@@ -346,6 +346,17 @@ button.ghost:hover { background: #1c2128; }
   font-size: 18px;
 }
 
+#card .spec::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: var(--spec, #3fb950);
+  box-shadow: 0 0 10px var(--spec, #3fb950);
+}
+
 #card .hintline {
   margin: 2px 0 0;
   color: var(--muted);
@@ -385,7 +396,16 @@ body.touch #touch {
   z-index: 5;
 }
 
-body.touch .hint { bottom: calc(156px + env(safe-area-inset-bottom)); }
-body.touch #card { bottom: calc(168px + env(safe-area-inset-bottom)); }
+body.touch #card {
+  left: calc(156px + env(safe-area-inset-left));
+  right: calc(12px + env(safe-area-inset-right));
+  width: auto;
+  transform: none;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+}
 
 body.modal #touch { display: none; }
+
+@media (max-width: 760px) {
+  .hint { display: none !important; }
+}
