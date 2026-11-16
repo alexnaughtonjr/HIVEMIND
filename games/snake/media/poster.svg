@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Snake poster">
+  <rect width="640" height="360" fill="#0d1117"/>
+  <g stroke="#30363d" stroke-width="2">
+    <path d="M40 40h560v280H40z" fill="#161b22"/>
+  </g>
+  <g fill="#238636">
+    <rect x="150" y="164" width="36" height="36" rx="6"/>
+    <rect x="194" y="164" width="36" height="36" rx="6"/>
+    <rect x="238" y="164" width="36" height="36" rx="6"/>
+    <rect x="282" y="164" width="36" height="36" rx="6"/>
+    <rect x="282" y="208" width="36" height="36" rx="6" fill="#3fb950"/>
+  </g>
+  <circle cx="430" cy="120" r="16" fill="#58a6ff"/>
+  <circle cx="470" cy="230" r="16" fill="#58a6ff"/>
+  <text x="48" y="78" fill="#8b949e" font-family="ui-monospace,monospace" font-size="18">snake</text>
+</svg>

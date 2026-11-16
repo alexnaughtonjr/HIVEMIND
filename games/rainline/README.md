@@ -1,5 +1,7 @@
 # Rainline
 
+![Rainline](media/poster.svg)
+
 Free custom game for Alexander Haislip. An original stick vigilante on an original rainy night block.
 
 Chain strikes between alley crew, counter the red warning over a thug’s head, drop from the stone perch, grapple the glowing rings, glide between roofs, and use a stun disc and a smoke pellet. Green gutter kits on the street restore health when you walk over them while hurt. Clear the block for the win screen.
@@ -12,7 +14,7 @@ Open `index.html` through a local static server, or play the GitHub Pages build.
 python3 -m http.server 8080
 ```
 
-Then open `http://localhost:8080/rainline/`.
+Then open `http://localhost:8080/games/rainline/`.
 
 ## Controls
 

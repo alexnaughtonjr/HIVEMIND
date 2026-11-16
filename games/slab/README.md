@@ -1,12 +1,14 @@
 # Slab
 
+![Slab](media/poster.svg)
+
 A 3D kiln stack. Drop a sliding glass slab, keep the overlap, and catch the amber embers.
 
 The slab alternates between the side axis and the depth axis. Anything that hangs off the tower is cut away. A clean miss ends the run. Land almost flush and the tower keeps its full size.
 
 ## Play
 
-Open `index.html` in a browser. WebGL is required. Three.js is the copy vendored at `shared/vendor/three.min.js`. Bloom comes from `shared/bloom.js`, and the drop sounds come from `shared/juice.js`. Nothing is loaded from a CDN, and there is no build step.
+Open `index.html` in a browser. WebGL is required. Three.js is the shared copy at `../../shared/vendor/three.min.js`. Bloom comes from `../../shared/bloom.js`, and the drop sounds come from `../../shared/juice.js`. Nothing is loaded from a CDN, and there is no build step.
 
 ## Controls
 

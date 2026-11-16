@@ -1,5 +1,7 @@
 # Vibe Coder: Ship Before Coffee Dies
 
+![Vibe Coder](media/poster.svg)
+
 Free custom game for Alexander Haislip — week two of the weekly free game drop, now rebuilt in **3D** with Three.js.
 
 Chain the right AI prompts, clear glitchy landing-page shards on a neon Primer desk, and deploy before the coffee in the 3D mug runs dry.

@@ -2,6 +2,8 @@
 
 A small collection of free, self-contained browser games. Each one is plain HTML, CSS, and JavaScript: no build step and no install.
 
+Every mini-game lives in `games/<slug>/` with its own `index.html`, a short `README.md`, and a `media/` folder. Product-lab pages stay at the repository root and open from `lab.html`.
+
 Open `index.html` for the list, or open a game file directly. Snake and Memory Match stay fully offline. Vibe Coder vendors Three.js and also requests Inter and JetBrains Mono from Google Fonts, with system-font fallbacks if that request is blocked.
 
 ## Play locally
@@ -38,11 +40,11 @@ Sixteen cards, eight pairs. Flip two at a time and remember where each shape lan
 
 ## Vibe Coder: Ship Before Coffee Dies
 
-`vibe-coder/index.html`
+`games/vibe-coder/index.html`
 
 Alexander Haislip’s weekly free custom game, rebuilt in 3D. Chain the right AI prompts, clear glitchy landing-page shards on a neon Primer desk, and deploy before the coffee in the mug runs dry.
 
-Open `vibe-coder/index.html` in a browser, or serve the `vibe-coder/` folder. WebGL is required. Three.js ships at `vibe-coder/vendor/three.min.js`.
+Open `games/vibe-coder/index.html` in a browser, or serve the `games/vibe-coder/` folder. WebGL is required. Three.js ships at `games/vibe-coder/vendor/three.min.js`.
 
 - Five sprints. Click or tap a prompt card, or press 1–8. Real fixes clear a glitch and build a combo.
 - Junk prompts cost coffee and reset the combo. One Sip per sprint (S) adds 10 seconds.
@@ -54,7 +56,7 @@ Free custom game for Alexander Haislip.
 
 ## Rainline
 
-`rainline/index.html`
+`games/rainline/index.html`
 
 Free custom game for Alexander Haislip. A short 3D night block: freeflow stick combat, counters, a stone-perch takedown, grapple rings, glide, a stun disc, and a smoke pellet. Clear the alley crew for the win screen. High quality adds soft shadows, neon bloom, denser rain, and lightning; `H` switches to Low if a laptop needs the lighter path.
 
@@ -64,11 +66,11 @@ WebGL is required. Three.js is vendored in the game folder, so play does not cal
 python3 -m http.server 8080
 ```
 
-Then visit `http://localhost:8080/rainline/`. The on-screen card lists every control.
+Then visit `http://localhost:8080/games/rainline/`. The on-screen card lists every control.
 
 ## Uplink
 
-`uplink/index.html`
+`games/uplink/index.html`
 
 Free custom game for Alexander Haislip. Climb a dark 3D relay shaft as a courier lamp. Each run builds a new stair up to a relay dish. Boost pads launch you, red lips crumble, blue slabs slide, striped lifts ride, and cyan gust vents shove the lamp sideways. Green rings take a grapple zip. Sweep beams guard the upper shaft. Blue beacons save a checkpoint. Miss a ledge before the first beacon and the run ends.
 
@@ -77,11 +79,11 @@ WebGL is required. Three.js is the shared vendored copy at `shared/vendor/three.
 - `A` `D` or the arrow keys move. `Space`, `W`, or `Up` jumps. On a touch screen, drag the stick, then tap Jump or Hook.
 - `Q` zips to a green ring in reach. The line cools down before the next zip. The camera leads the jump.
 - `P` or `Esc` pauses. Blue beacons save a checkpoint. The best score stays in this browser (`games.uplink.best`).
-- Open `uplink/index.html` directly, or visit it from the collection.
+- Open `games/uplink/index.html` directly, or visit it from the collection.
 
 ## Slab
 
-`slab/index.html`
+`games/slab/index.html`
 
 A 3D kiln stack. A glass slab slides across the tower. Drop it and only the overlap stays. A clean miss ends the run. The slab alternates between the side axis and the depth axis, and it speeds up as the tower grows. Land almost flush and the cut is forgiven, which builds a streak. Every third floor, an amber ember hangs in the drop lane. Cover it with the slab for extra points.
 
@@ -91,7 +93,7 @@ WebGL is required. Three.js is the shared vendored copy at `shared/vendor/three.
 - Each floor is 10 points. A perfect land adds 15 points times the streak. An ember is 50.
 - `P` or `Esc` pauses. `R` starts a fresh tower.
 - The best score stays in this browser (`games.slab.best`).
-- Open `slab/index.html` directly, or visit it from the collection.
+- Open `games/slab/index.html` directly, or visit it from the collection.
 
 ## Theme
 
@@ -106,4 +108,4 @@ Body text uses Inter, then the system UI stack. Titles, scores, and labels use J
 
 ## GitHub Pages
 
-`.github/workflows/pages.yml` publishes the repository root on every push to `main`. When Pages is enabled with GitHub Actions as the source, the collection is at `https://alexnaughtonjr.github.io/games/` and Slab is at `https://alexnaughtonjr.github.io/games/slab/`.
+`.github/workflows/pages.yml` publishes the repository root on every push to `main`. When Pages is enabled with GitHub Actions as the source, the collection is at `https://alexnaughtonjr.github.io/games/` and Slab is at `https://alexnaughtonjr.github.io/games/games/slab/`.

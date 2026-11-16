@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Vibe Coder poster">
+  <rect width="640" height="360" fill="#0d1117"/>
+  <rect x="70" y="70" width="250" height="210" rx="10" fill="#161b22" stroke="#58a6ff" stroke-width="3"/>
+  <rect x="96" y="104" width="150" height="14" rx="4" fill="#3fb950"/>
+  <rect x="96" y="132" width="110" height="10" rx="3" fill="#8b949e"/>
+  <rect x="96" y="154" width="170" height="10" rx="3" fill="#8b949e"/>
+  <rect x="96" y="176" width="90" height="10" rx="3" fill="#30363d"/>
+  <rect x="380" y="150" width="70" height="110" rx="8" fill="#238636"/>
+  <path d="M450 176h36a28 28 0 0 1 0 56h-36" fill="none" stroke="#3fb950" stroke-width="8"/>
+  <text x="70" y="52" fill="#8b949e" font-family="ui-monospace,monospace" font-size="18">vibe coder</text>
+</svg>

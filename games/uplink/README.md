@@ -1,12 +1,14 @@
 # Uplink
 
+![Uplink](media/poster.svg)
+
 Free custom game for Alexander Haislip. A 3D courier climb up a dark relay shaft.
 
 Jump a generated service stair cut into the shaft wall, pocket the blue cores, and land on the green relay pad. Striped lifts carry you, gust vents shove sideways, and green rings take a grapple zip. Missing a ledge ends the run.
 
 ## Play
 
-Open `index.html` in a browser. WebGL is required. Three.js is the copy vendored at `shared/vendor/three.min.js`, and bloom comes from `shared/bloom.js`. Nothing is loaded from a CDN, and there is no build step.
+Open `index.html` in a browser. WebGL is required. Three.js is the shared copy at `../../shared/vendor/three.min.js`, and bloom comes from `../../shared/bloom.js`. Nothing is loaded from a CDN, and there is no build step.
 
 ## Controls
 
