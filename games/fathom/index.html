@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0d1117">
+  <title>Fathom</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="view" aria-label="Fathom trench"></canvas>
+  <div id="vignette"></div>
+  <a id="home" class="corner" href="../../index.html">All games</a>
+
+  <header id="hud" hidden>
+    <div class="brand">fathom <span>/ survey</span></div>
+    <div class="meters">
+      <span>score <b id="score">0</b></span>
+      <span>best <b id="best">0</b></span>
+      <span>depth <b id="depth">20 m</b></span>
+      <span>lamp <span class="track"><span id="battBar"></span></span></span>
+      <span id="zoneLabel">Sunlight</span>
+    </div>
+    <button id="pauseBtn" class="ghost" type="button" aria-pressed="false">Pause</button>
+  </header>
+
+  <section id="title" class="overlay">
+    <div class="card">
+      <p class="eyebrow">3D ocean survey</p>
+      <h1>Fathom</h1>
+      <p class="sub">Five zones</p>
+      <p class="lead">Pilot a research lamp down a trench. Log the animal on the field card in each ocean zone before the lamp goes dark.</p>
+      <ul class="howto">
+        <li><kbd>A</kbd> <kbd>D</kbd> or the arrows slide. <kbd>W</kbd> <kbd>S</kbd> move in and out. On a touch screen, drag the stick or the trench.</li>
+        <li>The glowing ring is the animal on the card. Steer into it to file the zone.</li>
+        <li>Other animals and rock spires drain the lamp. From the midnight zone down, a hot vent pushes you sideways.</li>
+        <li>Five logs complete the survey. Leftover lamp charge becomes bonus points. <kbd>P</kbd> pauses. <kbd>R</kbd> starts over.</li>
+      </ul>
+      <button id="start" type="button">Start the survey</button>
+      <p id="titleBest" class="credit">Best score saves in this browser.</p>
+      <p class="credit"><a href="../../index.html">All games</a></p>
+    </div>
+  </section>
+
+  <p id="hint" class="hint hidden">Catch the ring. Dodge the rest.</p>
+  <p id="callout" class="callout hidden" aria-live="polite"></p>
+  <p id="fact" class="fact hidden"></p>
+
+  <aside id="card" class="hidden">
+    <p class="zone" id="zoneName">Sunlight</p>
+    <p class="spec" id="specName">Moon jelly</p>
+    <p class="hintline" id="specHint">Clear bell and short tentacles</p>
+  </aside>
+
+  <div id="touch">
+    <div id="stick" aria-label="Steer">
+      <div id="nub"></div>
+    </div>
+  </div>
+
+  <section id="pause" class="overlay hidden">
+    <div class="card">
+      <p class="eyebrow">paused</p>
+      <h1>Lamp held</h1>
+      <p class="lead">The trench is frozen. Resume the survey, or start again from the sunlight zone.</p>
+      <div class="pause-actions">
+        <button id="resume" type="button">Resume</button>
+        <button id="restart" class="ghost" type="button">Restart</button>
+        <a href="../../index.html">All games</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="end" class="overlay hidden">
+    <div class="card">
+      <p class="eyebrow" id="endKicker">survey filed</p>
+      <h1 id="endTitle">Trench logged</h1>
+      <p class="lead" id="endText"></p>
+      <p class="scoreline" id="endScore"></p>
+      <button id="retry" type="button">Survey again</button>
+      <p class="credit"><a href="../../index.html">All games</a></p>
+    </div>
+  </section>
+
+  <p id="fail" class="fail hidden">This browser has no WebGL context, so Fathom cannot start. <a href="../../index.html">All games</a></p>
+
+  <script src="../../shared/vendor/three.min.js"></script>
+  <script src="../../shared/bloom.js"></script>
+  <script src="../../shared/juice.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
