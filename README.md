@@ -1,99 +1,60 @@
 # Games
 
-A small collection of free, self-contained browser games. Each one is plain HTML, CSS, and JavaScript: no build step and no install.
+Small, free browser games. Each one is plain HTML, CSS, and JavaScript: no build step and no install. A new game lands on Mondays.
 
-Every mini-game lives in `games/<slug>/` with its own `index.html`, a short `README.md`, and a `media/` folder. Product-lab pages stay at the repository root and open from `lab.html`.
+Open [index.html](index.html) and press Play, or open a game folder directly.
 
-Open `index.html` for the list, or open a game file directly. Snake and Memory Match stay fully offline. Vibe Coder vendors Three.js and also requests Inter and JetBrains Mono from Google Fonts, with system-font fallbacks if that request is blocked.
+## Game of the week
 
-## Play locally
+### Fathom
 
-Clone the repo and open the HTML file in any modern browser. A local server is optional; the file protocol works.
+[![Fathom gameplay: the lamp logs a moon jelly, then meets a lanternfish in the twilight zone](games/fathom/media/preview.gif)](games/fathom/media/gameplay.mp4)
+
+Pilot a research lamp down a trench and log one animal from each ocean zone before the lamp goes dark. The preview is a real run. Select it for the MP4.
+
+**Play:** [games/fathom/](games/fathom/)
+
+**Controls:** `A` `D` or the arrows slide the lamp. `W` `S` move it in and out. On a touch screen, drag the stick or the trench. Steer into the glowing ring, and dodge everything else. `P` pauses. `R` starts over.
+
+## All games
+
+| Preview | Game | What you do | Controls |
+|---|---|---|---|
+| <a href="games/fathom/media/gameplay.mp4"><img src="games/fathom/media/preview.gif" alt="Fathom gameplay" width="180"></a> | [Fathom](games/fathom/) | Log one animal from each ocean zone before the lamp goes dark. | WASD or arrows. Drag the stick. Catch the ring. P pauses. |
+| <a href="games/snake/"><img src="games/snake/media/poster.svg" alt="Snake" width="180"></a> | [Snake](games/snake/) | Eat the blue pellets. Avoid the walls and your tail. | Arrows or WASD. Swipe or the pad. Space pauses. |
+| <a href="games/memory/"><img src="games/memory/media/poster.svg" alt="Memory Match" width="180"></a> | [Memory Match](games/memory/) | Flip eight pairs and finish in as few moves as you can. | Click, or arrows and Enter. |
+| <a href="games/vibe-coder/"><img src="games/vibe-coder/media/poster.svg" alt="Vibe Coder" width="180"></a> | [Vibe Coder](games/vibe-coder/) | Clear glitchy landing-page shards and deploy before the coffee runs dry. | Click a prompt or press 1–8. Enter deploys. Space pauses. |
+| <a href="games/rainline/"><img src="games/rainline/media/poster.svg" alt="Rainline" width="180"></a> | [Rainline](games/rainline/) | A stick vigilante on a rainy block. Chain strikes and clear the crew. | WASD and mouse. J strikes. Esc pauses. |
+| <a href="games/uplink/"><img src="games/uplink/media/poster.svg" alt="Uplink" width="180"></a> | [Uplink](games/uplink/) | Climb a relay shaft. Ride lifts, zip to green rings, and light the dish. | A D or arrows. Space jumps. Q hooks. |
+| <a href="games/slab/"><img src="games/slab/media/poster.svg" alt="Slab" width="180"></a> | [Slab](games/slab/) | Drop glass slabs in a kiln. Keep the overlap and catch the embers. | Space, click, or Drop. P pauses. |
+
+## Run locally
 
 ```bash
 git clone https://github.com/alexnaughtonjr/games.git
 cd games
-```
-
-Then open `index.html`, or one of the game pages below. On the collection page, press 1–6 to open Snake, Memory Match, Vibe Coder, Rainline, Uplink, or Slab. Vibe Coder, Rainline, Uplink, and Slab link back to that page.
-
-## Snake
-
-`games/snake/index.html`
-
-Steer a snake around a 20×20 board and eat the blue pellets. Each pellet is worth 10 points and the snake speeds up as the score climbs. Hitting a wall or your own tail ends the run. Filling the board wins it.
-
-- Arrow keys or WASD choose the direction and start the run. The snake stays still until that first direction. On a touch screen, swipe the board or use the on-screen pad.
-- A second direction pressed before the next step is kept, so a fast corner still happens. A turn that would reverse into the tail is ignored.
-- Start clears the ready message so the board is visible. Space or P pauses. R or Restart returns to the ready screen. Play again, after a wall, a tail, or a full board, deals a fresh snake and waits for the next direction.
-- The best score is saved in this browser under `localStorage` (`games.snake.highScore`).
-
-## Memory Match
-
-`games/memory/index.html`
-
-Sixteen cards, eight pairs. Flip two at a time and remember where each shape landed. The clock starts on the first flip.
-
-- Tap a card, or move with the arrow keys and press Enter or Space.
-- New game deals a fresh board.
-- Fewest moves (`games.memory.bestMoves`) and best time (`games.memory.bestTimeMs`) stay in this browser.
-
-## Vibe Coder: Ship Before Coffee Dies
-
-`games/vibe-coder/index.html`
-
-Alexander Haislip’s weekly free custom game, rebuilt in 3D. Chain the right AI prompts, clear glitchy landing-page shards on a neon Primer desk, and deploy before the coffee in the mug runs dry.
-
-Open `games/vibe-coder/index.html` in a browser, or serve the `games/vibe-coder/` folder. WebGL is required. Three.js ships at `games/vibe-coder/vendor/three.min.js`.
-
-- Five sprints. Click or tap a prompt card, or press 1–8. Real fixes clear a glitch and build a combo.
-- Junk prompts cost coffee and reset the combo. One Sip per sprint (S) adds 10 seconds.
-- Deploy (Enter) once every glitch is fixed. Leftover coffee becomes bonus points.
-- Space or P pauses the timer and freezes the desk. R restarts the run. The best score is saved in this browser (`games.vibeCoder.highScore`).
-- All games, in the top bar and on the title, pause, and result cards, returns to the collection.
-
-Free custom game for Alexander Haislip.
-
-## Rainline
-
-`games/rainline/index.html`
-
-Free custom game for Alexander Haislip. A short 3D night block: freeflow stick combat, counters, a stone-perch takedown, grapple rings, glide, a stun disc, and a smoke pellet. Clear the alley crew for the win screen. High quality adds soft shadows, neon bloom, denser rain, and lightning; `H` switches to Low if a laptop needs the lighter path.
-
-WebGL is required. Three.js is vendored in the game folder, so play does not call a CDN. Keyboard and mouse. Esc pauses even when the pointer is not locked, and the Pause button in the corner does the same. Title, pause, and result cards link back to all games. A local static server is the surest way to open it:
-
-```bash
 python3 -m http.server 8080
 ```
 
-Then visit `http://localhost:8080/games/rainline/`. The on-screen card lists every control.
+Open <http://localhost:8080/>. Opening `index.html` from the file system also works. Snake and Memory Match stay fully offline. The 3D games need WebGL. Three.js is vendored in the repo, so play does not call a CDN.
 
-## Uplink
+On the collection page, press 1–7 to open Snake, Memory Match, Vibe Coder, Rainline, Uplink, Slab, or Fathom.
 
-`games/uplink/index.html`
+## Add a Monday game
 
-Free custom game for Alexander Haislip. Climb a dark 3D relay shaft as a courier lamp. Each run builds a new stair up to a relay dish. Boost pads launch you, red lips crumble, blue slabs slide, striped lifts ride, and cyan gust vents shove the lamp sideways. Green rings take a grapple zip. Sweep beams guard the upper shaft. Blue beacons save a checkpoint. Miss a ledge before the first beacon and the run ends.
+Each mini-game lives in `games/<slug>/`:
 
-WebGL is required. Three.js is the shared vendored copy at `shared/vendor/three.min.js`, and bloom is `shared/bloom.js`. Play does not call a CDN and there is no build step. The shaft uses a soft shadow and neon bloom. Green bulbs on the left rail light up to the best height of the run.
+| File | Purpose |
+|---|---|
+| `index.html` | The game. This is the page people open. |
+| `README.md` | Name, one-line pitch, controls, and the preview. |
+| `media/preview.gif` | Short looping capture. |
+| `media/gameplay.mp4` | The same capture, about 5–15 seconds. Link the GIF to this file. |
+| `game.js`, `style.css` | Source, when the game is not a single file. |
 
-- `A` `D` or the arrow keys move. `Space`, `W`, or `Up` jumps. On a touch screen, drag the stick, then tap Jump or Hook.
-- `Q` zips to a green ring in reach. The line cools down before the next zip. The camera leads the jump.
-- `P` or `Esc` pauses. Blue beacons save a checkpoint. The best score stays in this browser (`games.uplink.best`).
-- Open `games/uplink/index.html` directly, or visit it from the collection.
+Shared Three.js, bloom, and sounds live in `shared/` for games that want them. A game that already vendors its own Three.js keeps that copy in its folder.
 
-## Slab
-
-`games/slab/index.html`
-
-A 3D kiln stack. A glass slab slides across the tower. Drop it and only the overlap stays. A clean miss ends the run. The slab alternates between the side axis and the depth axis, and it speeds up as the tower grows. Land almost flush and the cut is forgiven, which builds a streak. Every third floor, an amber ember hangs in the drop lane. Cover it with the slab for extra points.
-
-WebGL is required. Three.js is the shared vendored copy at `shared/vendor/three.min.js`. Bloom is `shared/bloom.js`, and the drop sounds come from `shared/juice.js`. Play does not call a CDN and there is no build step. A soft bloom and a warm kiln light sit under the glass.
-
-- Space, click, or tap drops the slab. On a touch screen, tap the kiln or the Drop button. The pale mark shows where the slab will land.
-- Each floor is 10 points. A perfect land adds 15 points times the streak. An ember is 50.
-- `P` or `Esc` pauses. `R` starts a fresh tower.
-- The best score stays in this browser (`games.slab.best`).
-- Open `games/slab/index.html` directly, or visit it from the collection.
+Add a row to the gallery above and a card on [index.html](index.html). Product-lab pages stay at the repository root and open from [lab.html](lab.html).
 
 ## Theme
 
@@ -104,8 +65,8 @@ Pages use the GitHub Primer dark palette:
 - Green accent `#238636`
 - Blue accent `#58a6ff`
 
-Body text uses Inter, then the system UI stack. Titles, scores, and labels use JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace. Snake, Memory Match, Rainline, Uplink, and Slab do not download fonts. Vibe Coder requests Inter and JetBrains Mono from Google Fonts and falls back to that same stack.
+Body text uses Inter, then the system UI stack. Titles, scores, and labels use JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace. Snake, Memory Match, Rainline, Uplink, Slab, and Fathom do not download fonts. Vibe Coder requests Inter and JetBrains Mono from Google Fonts and falls back to that same stack.
 
 ## GitHub Pages
 
-`.github/workflows/pages.yml` publishes the repository root on every push to `main`. When Pages is enabled with GitHub Actions as the source, the collection is at `https://alexnaughtonjr.github.io/games/` and Slab is at `https://alexnaughtonjr.github.io/games/games/slab/`.
+`.github/workflows/pages.yml` publishes the repository root on every push to `main`. When Pages is enabled with GitHub Actions as the source, the collection is at `https://alexnaughtonjr.github.io/games/` and Fathom is at `https://alexnaughtonjr.github.io/games/games/fathom/`.
