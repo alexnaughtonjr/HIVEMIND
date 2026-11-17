@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0d1117">
+  <meta name="description" content="Murmur: lead a starling flock through amber rings over a dusk marsh and reach the roost before the sun sets.">
+  <title>Murmur</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"
+    }
+  }
+  </script>
+  <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js">
+</head>
+<body>
+  <canvas id="view" aria-label="Murmur marsh"></canvas>
+  <div id="vignette"></div>
+  <div id="flash"></div>
+  <a id="home" class="corner" href="../../index.html">All games</a>
+
+  <header id="hud" hidden>
+    <div class="brand">murmur <span>/ dusk</span></div>
+    <div class="meters">
+      <span>score <b id="score">0</b></span>
+      <span>best <b id="best">0</b></span>
+      <span>birds <b id="birds">16</b></span>
+      <span>rings <b id="rings">0/8</b></span>
+      <span>sun <span class="track"><span id="sunBar"></span></span></span>
+      <span id="callLabel">call ready</span>
+    </div>
+    <button id="muteBtn" class="ghost" type="button" aria-pressed="false">Sound</button>
+    <button id="pauseBtn" class="ghost" type="button" aria-pressed="false">Pause</button>
+  </header>
+
+  <section id="title" class="overlay">
+    <div class="card">
+      <p class="eyebrow">3D dusk flight</p>
+      <h1>Murmur</h1>
+      <p class="sub">Eight rings</p>
+      <p class="lead">Lead a starling murmuration over a reed marsh. Thread the amber rings, keep the flock together, and reach the roost oak before the sun sets.</p>
+      <ul class="howto">
+        <li><kbd>A</kbd> <kbd>D</kbd> or the arrows bank. <kbd>W</kbd> <kbd>S</kbd> climb and dive. Move the mouse, or drag the stick on a touch screen.</li>
+        <li>Fly through each amber ring. A ring folds four more starlings into the flock.</li>
+        <li>Dark posts with a red ribbon snag birds. <kbd>Space</kbd> calls the flock tight for a short slip.</li>
+        <li>Reach the oak with starlings still beside you. <kbd>P</kbd> pauses. <kbd>R</kbd> starts over.</li>
+      </ul>
+      <button id="start" type="button" disabled>Loading the marsh…</button>
+      <p id="titleBest" class="credit">Best score saves in this browser.</p>
+      <p class="credit"><a href="../../index.html">All games</a></p>
+    </div>
+  </section>
+
+  <p id="hint" class="hint hidden">Thread the amber ring.</p>
+  <p id="callout" class="callout hidden" aria-live="polite"></p>
+
+  <div id="touch">
+    <div id="stick" aria-label="Steer">
+      <div id="nub"></div>
+    </div>
+  </div>
+
+  <section id="pause" class="overlay hidden">
+    <div class="card">
+      <p class="eyebrow">paused</p>
+      <h1>Wingbeat held</h1>
+      <p class="lead">The marsh is still. Resume the flight, or start again from the first ring.</p>
+      <div class="pause-actions">
+        <button id="resume" type="button">Resume</button>
+        <button id="restart" class="ghost" type="button">Restart</button>
+        <a href="../../index.html">All games</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="end" class="overlay hidden">
+    <div class="card">
+      <p class="eyebrow" id="endKicker">roost</p>
+      <h1 id="endTitle">The roost holds</h1>
+      <p class="lead" id="endText"></p>
+      <p class="scoreline" id="endScore"></p>
+      <button id="retry" type="button">Fly again</button>
+      <p class="credit"><a href="../../index.html">All games</a></p>
+    </div>
+  </section>
+
+  <p id="fail" class="fail hidden">This browser has no WebGL context, so Murmur cannot start. <a href="../../index.html">All games</a></p>
+
+  <script type="module" src="game.js"></script>
+</body>
+</html>
