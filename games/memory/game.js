@@ -1,5 +1,5 @@
-const MOVES_KEY = "games.memory.bestMoves";
-const TIME_KEY = "games.memory.bestTimeMs";
+const SLUG = "memory";
+const LEGACY = "games.memory.bestMoves";
 
 const FACES = [
   {
@@ -65,25 +65,23 @@ let started = false;
 let t0 = 0;
 let timerId = null;
 let mismatchTimer = null;
-let bestMoves = readNum(MOVES_KEY);
-let bestTime = readNum(TIME_KEY);
+let bestMoves = readBest();
 
-function readNum(key) {
+function readBest() {
   try {
-    const raw = localStorage.getItem(key);
-    if (raw === null || raw === "") return null;
-    const n = Number(raw);
-    return Number.isFinite(n) && n >= 0 ? n : null;
-  } catch {
+    if (!window.HivemindHighscore) return null;
+    return window.HivemindHighscore.get(SLUG, LEGACY);
+  } catch (err) {
     return null;
   }
 }
 
-function writeNum(key, n) {
+function commitBest(value) {
   try {
-    localStorage.setItem(key, String(n));
-  } catch {
-    /* private mode or blocked storage */
+    if (!window.HivemindHighscore) return { best: null, improved: false };
+    return window.HivemindHighscore.submit(SLUG, value, { mode: "min", legacy: LEGACY });
+  } catch (err) {
+    return { best: null, improved: false };
   }
 }
 
@@ -107,17 +105,15 @@ function elapsed() {
   return started ? performance.now() - t0 : 0;
 }
 
-function bestLabel() {
-  if (bestMoves === null) return "—";
-  const time = bestTime === null ? "" : " · " + fmt(bestTime);
-  return bestMoves + time;
+function bestText() {
+  return bestMoves == null ? "—" : bestMoves + " moves";
 }
 
 function updateHud() {
   movesEl.textContent = String(moves);
   matchesEl.textContent = matches + "/" + FACES.length;
   timeEl.textContent = fmt(elapsed());
-  bestEl.textContent = bestLabel();
+  bestEl.textContent = bestText();
 }
 
 function paint(i) {
@@ -146,21 +142,15 @@ function startTimer() {
 function showWin(ms) {
   lock = true;
   stopTimer();
-  const improvedMoves = bestMoves === null || moves < bestMoves;
-  const improvedTime = bestTime === null || ms < bestTime;
-  if (improvedMoves) {
-    bestMoves = moves;
-    writeNum(MOVES_KEY, moves);
-  }
-  if (improvedTime) {
-    bestTime = ms;
-    writeNum(TIME_KEY, Math.round(ms));
-  }
+  const result = commitBest(moves);
+  const improved = !!result.improved;
+  if (result.best != null) bestMoves = result.best;
   updateHud();
-  let note = moves + " moves in " + fmt(ms) + ".";
-  if (improvedMoves || improvedTime) note += " New best saved in this browser.";
+  const bestShown = bestMoves == null ? "—" : bestMoves + " moves";
   overlayTitle.textContent = "Cleared";
-  overlayText.textContent = note;
+  overlayText.textContent = moves + " moves in " + fmt(ms) + ". Best " + bestShown + ".";
+  const record = document.getElementById("overlay-record");
+  if (record) record.hidden = !improved;
   overlay.hidden = false;
 }
 
@@ -193,6 +183,8 @@ function deal() {
     return btn;
   });
   buttons.forEach((_, i) => paint(i));
+  const record = document.getElementById("overlay-record");
+  if (record) record.hidden = true;
   overlay.hidden = true;
   updateHud();
 }

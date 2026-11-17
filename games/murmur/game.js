@@ -1,7 +1,8 @@
 import * as THREE from "three";
 
 const $ = (id) => document.getElementById(id);
-const BEST_KEY = "games.murmur.best";
+const SLUG = "murmur";
+const LEGACY = "games.murmur.best";
 
 const SPEED = 26;
 const SUN_SECONDS = 42;
@@ -59,19 +60,24 @@ const WILLOWS = [
 
 function readBest() {
   try {
-    const n = Number(localStorage.getItem(BEST_KEY));
-    return Number.isFinite(n) && n > 0 ? Math.floor(n) : 0;
+    if (!window.HivemindHighscore) return null;
+    return window.HivemindHighscore.get(SLUG, LEGACY);
   } catch (err) {
-    return 0;
+    return null;
   }
 }
 
-function writeBest(n) {
+function commitBest(value) {
   try {
-    localStorage.setItem(BEST_KEY, String(n));
+    if (!window.HivemindHighscore) return { best: null, improved: false };
+    return window.HivemindHighscore.submit(SLUG, value, { mode: "max", legacy: LEGACY });
   } catch (err) {
-    /* Private mode can block storage. The run still finishes. */
+    return { best: null, improved: false };
   }
+}
+
+function bestText(n) {
+  return "BEST: " + (n == null ? "—" : String(n));
 }
 
 function rng(seed) {
@@ -339,6 +345,7 @@ function boot() {
     callCd: 0,
     shake: 0,
     best: readBest(),
+    bestAtStart: null,
     flash: 0,
     hint: 0,
     callout: 0,
@@ -426,7 +433,8 @@ function boot() {
 
   function updateHud() {
     $("score").textContent = String(state.score);
-    $("best").textContent = String(state.best);
+    const shown = state.score > (state.best || 0) ? state.score : state.best;
+    $("best").textContent = bestText(shown);
     $("birds").textContent = String(state.birds);
     $("rings").textContent = `${state.gates}/8`;
     const day = clamp(state.sun / SUN_SECONDS, 0, 1);
@@ -455,6 +463,7 @@ function boot() {
     state.vy = 0;
     state.birds = START_BIRDS;
     state.score = 0;
+    state.bestAtStart = state.best;
     state.gates = 0;
     state.sun = SUN_SECONDS;
     state.stall = 0;
@@ -541,12 +550,12 @@ function boot() {
       $("endText").textContent = "Every starling peeled away. The marsh kept the line.";
       thud();
     }
-    const fresh = total > state.best;
-    if (fresh) {
-      state.best = total;
-      writeBest(total);
-    }
-    $("endScore").textContent = `${detail} · score ${total}${fresh ? " · new best" : ""}`;
+    const prev = state.bestAtStart;
+    const result = commitBest(total);
+    if (result.best != null) state.best = result.best;
+    const improved = total > (prev || 0);
+    $("endScore").textContent = `${detail} · Score ${total} · Best ${state.best == null ? "—" : state.best}`;
+    $("endRecord").classList.toggle("hidden", !improved);
     state.score = total;
     setMode("end");
   }
@@ -870,10 +879,8 @@ function boot() {
 
   $("start").disabled = false;
   $("start").textContent = "Take the lead";
-  $("titleBest").textContent = state.best > 0
-    ? `Best score in this browser: ${state.best}`
-    : "Best score saves in this browser.";
-  $("best").textContent = String(state.best);
+  $("titleBest").textContent = bestText(state.best);
+  $("best").textContent = bestText(state.best);
 
   $("start").addEventListener("click", beginRun);
   $("resume").addEventListener("click", () => setMode("play"));

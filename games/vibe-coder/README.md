@@ -13,7 +13,10 @@ Chain the right AI prompts, clear glitchy landing-page shards on a neon Primer d
 - One emergency **Sip** per sprint (**S**) adds 10 seconds — watch the liquid level in the 3D mug.
 - **Deploy** (**Enter**) once every glitch is fixed. Deploying early costs 5 seconds. Leftover coffee becomes bonus points.
 - **Space** or **P** pauses the coffee timer and freezes the 3D desk (steam, shards, and camera). **R** restarts the run. Resume with Space, P, Esc, or Enter.
-- The best score is saved in this browser under `localStorage` (`games.vibeCoder.highScore`).
+
+## High scores
+
+The best score stays in this browser only, on this device (`localStorage` key `hivemind.highscore.vibe-coder`). Higher is better. Real fixes score 100 times the combo, and leftover coffee at deploy is worth 10 points a second. An older save under `games.vibeCoder.highScore` is copied across the first time the game looks.
 
 ## Tech
 - **Three.js** (vendored locally at `vendor/three.min.js`) — offline-safe, no CDN required at play time.

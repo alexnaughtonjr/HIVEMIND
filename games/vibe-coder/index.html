@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#0d1117">
+<link rel="icon" href="data:,">
 <title>Vibe Coder: Ship Before Coffee Dies</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +21,7 @@
       <span>sprint <b id="lvl">1</b>/5</span>
       <span>combo <b id="combo">x1</b></span>
       <span>score <b id="score">0</b></span>
-      <span>best <b id="best">0</b></span>
+      <span class="best-stat"><b id="best">BEST: —</b></span>
       <span class="coffee-stat">☕ <b id="secs">60s</b></span>
       <button id="pauseBtn" type="button" class="btn tiny" disabled aria-pressed="false">Pause</button>
     </div>
@@ -38,7 +40,7 @@
         <li><kbd>Space</kbd> or <kbd>P</kbd> pauses the timer and freezes the desk. <kbd>R</kbd> restarts the run. Best score stays in this browser.</li>
       </ul>
       <button id="start" class="btn primary">Start sprint ▶</button>
-      <p id="titleBest" class="credit">Best score saves in this browser.</p>
+      <p id="titleBest" class="best-line">BEST: —</p>
       <p class="credit"><a class="back" href="../../index.html">All games</a></p>
       <p class="credit">Free custom game for Alexander Haislip</p>
     </div>
@@ -75,7 +77,8 @@
     <div class="card-glass">
       <h1 id="endTitle">Shipped!</h1>
       <p id="endText" class="lead"></p>
-      <p id="endBest" class="credit"></p>
+      <p id="endRecord" class="record hidden">NEW HIGH SCORE!</p>
+      <p id="endScore" class="scoreline"></p>
       <button id="again" class="btn primary">Play again ↻</button>
       <p class="credit"><a class="back" href="../../index.html">All games</a></p>
       <p class="credit">Free custom game for Alexander Haislip</p>
@@ -95,6 +98,7 @@
     </div>
   </section>
 </div>
+<script src="../shared/highscore.js"></script>
 <script src="vendor/three.min.js"></script>
 <script src="game.js"></script>
 </body>

@@ -146,6 +146,53 @@
   let lastMX = 0;
   let lastMY = 0;
 
+  let score = 0;
+  let best = readBest();
+  let bestAtStart = best;
+
+  function readBest() {
+    try {
+      if (!window.HivemindHighscore) return null;
+      return window.HivemindHighscore.get("rainline");
+    } catch (err) {
+      return null;
+    }
+  }
+
+  function commitBest(value) {
+    try {
+      if (!window.HivemindHighscore) return { best: null, improved: false };
+      return window.HivemindHighscore.submit("rainline", value, { mode: "max" });
+    } catch (err) {
+      return { best: null, improved: false };
+    }
+  }
+
+  function bestText(n) {
+    return "BEST: " + (n == null ? "—" : String(n));
+  }
+
+  function paintBest() {
+    const bestNode = document.getElementById("best");
+    if (bestNode) bestNode.textContent = bestText(score > (best || 0) ? score : best);
+    const titleBest = document.getElementById("titleBest");
+    if (titleBest) titleBest.textContent = bestText(best);
+    const scoreNode = document.getElementById("score");
+    if (scoreNode) scoreNode.textContent = String(score);
+  }
+
+  function bankScore() {
+    if (score <= (best || 0)) {
+      paintBest();
+      return;
+    }
+    const result = commitBest(score);
+    best = result.best != null ? result.best : score;
+    paintBest();
+  }
+
+  paintBest();
+
   const rendererOk = boot();
   if (!rendererOk) return;
 
@@ -1115,6 +1162,9 @@
   }
 
   function begin() {
+    score = 0;
+    bestAtStart = best;
+    paintBest();
     started = true;
     paused = false;
     mode = "play";
@@ -1989,6 +2039,7 @@
     reticle.classList.toggle("lock", !!targetGrapple);
     if (tipUntil && now > tipUntil) tipEl.hidden = true;
     promptEl.textContent = currentPrompt();
+    paintBest();
   }
 
   function currentPrompt() {
@@ -2202,6 +2253,8 @@
     e.state = "dead";
     e.cone.visible = false;
     e.marker.visible = false;
+    score += 100 + player.combo * 25;
+    bankScore();
   }
 
   function damagePlayer(amount) {
@@ -2212,9 +2265,13 @@
   }
 
   function finish(win) {
+    if (ending) return;
     ending = true;
     paused = false;
     mode = win ? "won" : "dead";
+    if (win) score += 500;
+    bankScore();
+    const improved = score > (bestAtStart || 0);
     if (document.pointerLockElement) document.exitPointerLock();
     endEl.classList.remove("hidden");
     document.getElementById("endEyebrow").textContent = win ? "cleared" : "down";
@@ -2222,6 +2279,8 @@
     document.getElementById("endText").textContent = win
       ? "The alley crew is down. The block belongs to the rain again."
       : "You hit the pavement. The crew still owns the block.";
+    document.getElementById("endScore").textContent = "Score " + score + " · Best " + (best == null ? "—" : best);
+    document.getElementById("endRecord").classList.toggle("hidden", !improved);
     if (win) {
       blip(440, 0.12, "sine", 0.05, 660);
       setTimeout(() => blip(660, 0.18, "sine", 0.05, 880), 140);

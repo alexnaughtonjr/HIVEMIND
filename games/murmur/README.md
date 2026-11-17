@@ -22,7 +22,10 @@ Open <http://localhost:8080/games/murmur/>. `npx serve .` works the same way. We
 - Dark posts marked with a red ribbon snag the flock. `Space` calls the birds tight and shortens the snag for a moment.
 - Reach the roost oak while at least one starling is still with you, before the sun meter empties.
 - `P` or `Esc` pauses. `R` starts the flight over. `M` mutes the chirps.
-- The best score stays in this browser under `games.murmur.best`.
+
+## High scores
+
+The best score stays in this browser only, on this device (`localStorage` key `hivemind.highscore.murmur`). Higher is better. Each ring is 300 while you fly. Reaching the oak adds 80 for every starling still with you and 30 for each second of daylight left. A scattered or darkened run keeps the ring points only. An older save under `games.murmur.best` is copied across the first time the game looks.
 
 ## Scoring
 

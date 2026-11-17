@@ -17,4 +17,7 @@ Open `index.html` in a browser. WebGL is required. Three.js is the shared copy a
 - Each floor is 10 points. A perfect land adds 15 points times the streak
 - An amber ember appears every third floor. Cover it for 50 points
 - `P` or `Esc` pauses. `R` starts a fresh tower
-- The best score is saved in this browser under `games.slab.best`
+
+## High scores
+
+The best score stays in this browser only, on this device (`localStorage` key `hivemind.highscore.slab`). Higher is better: 10 points per floor, 15 times the streak for a perfect land, and 50 for an ember. An older save under `games.slab.best` is copied across the first time the game looks.

@@ -82,3 +82,18 @@ Pages use the GitHub Primer dark palette:
 - Blue accent `#58a6ff`
 
 Body text uses Inter, then the system UI stack. Titles, scores, and labels use JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace. Snake, Memory Match, Rainline, Uplink, Slab, Fathom, and Murmur do not download fonts. Vibe Coder requests Inter and JetBrains Mono from Google Fonts and falls back to that same stack.
+
+## High scores
+
+Each game keeps a personal best in this browser only, on this device. The number lives in `localStorage` under `hivemind.highscore.<slug>`. Nothing is sent to a server. The collection page shows a best on a card after you have one.
+
+| Game | What "best" means |
+|---|---|
+| Snake | Highest score. Each pellet is 10 points. |
+| Memory Match | Fewest moves to clear all eight pairs. |
+| Vibe Coder | Highest score from fixes and leftover coffee. |
+| Rainline | Highest score. A takedown is 100 plus 25 times the combo. Clearing the block adds 500. |
+| Uplink | Highest score. Each meter climbed is 10, and each core is 100. |
+| Slab | Highest score. Floors, perfect landings, and caught embers. |
+| Fathom | Highest score. Logged animals, plus leftover lamp charge. Hits drain points, so the best is the score at the end of the survey. |
+| Murmur | Highest score. 300 for each ring, then 80 for each starling still flying and 30 for each second of daylight left. |

@@ -2,23 +2,29 @@
   "use strict";
 
   const $ = (id) => document.getElementById(id);
-  const HIGH_KEY = "games.slab.best";
+  const SLUG = "slab";
+  const LEGACY = "games.slab.best";
 
   function readBest() {
     try {
-      const n = Number(localStorage.getItem(HIGH_KEY));
-      return Number.isFinite(n) && n > 0 ? Math.floor(n) : 0;
+      if (!window.HivemindHighscore) return null;
+      return window.HivemindHighscore.get(SLUG, LEGACY);
     } catch (err) {
-      return 0;
+      return null;
     }
   }
 
-  function writeBest(n) {
+  function commitBest(value) {
     try {
-      localStorage.setItem(HIGH_KEY, String(n));
+      if (!window.HivemindHighscore) return { best: null, improved: false };
+      return window.HivemindHighscore.submit(SLUG, value, { mode: "max", legacy: LEGACY });
     } catch (err) {
-      /* Private mode can block storage. The run still finishes. */
+      return { best: null, improved: false };
     }
+  }
+
+  function bestText(n) {
+    return "BEST: " + (n == null ? "—" : String(n));
   }
 
   function showFail() {
@@ -485,7 +491,10 @@
     const floors = $("floors");
     const streak = $("streak");
     if (score) score.textContent = String(state.score);
-    if (best) best.textContent = String(state.best);
+    if (best) {
+      const shown = state.score > (state.best || 0) ? state.score : state.best;
+      best.textContent = bestText(shown);
+    }
     if (floors) floors.textContent = String(state.floors);
     if (streak) streak.textContent = String(state.combo);
   }
@@ -655,12 +664,14 @@
       : `The tower held ${floors} ${floorWord}.${emberBit}`;
     const endText = $("endText");
     if (endText) endText.textContent = text;
-    if (state.score > state.best) {
-      state.best = state.score;
-      writeBest(state.best);
-    }
+    const prev = state.best;
+    const result = commitBest(state.score);
+    if (result.best != null) state.best = result.best;
+    const improved = state.score > (prev || 0);
     const endScore = $("endScore");
-    if (endScore) endScore.textContent = `Score ${state.score} · best ${state.best}`;
+    if (endScore) endScore.textContent = `Score ${state.score} · Best ${state.best == null ? "—" : state.best}`;
+    const record = $("endRecord");
+    if (record) record.classList.toggle("hidden", !improved);
     paintHud();
     const end = $("end");
     if (end) end.classList.remove("hidden");
@@ -934,7 +945,7 @@
   });
 
   const titleBest = $("titleBest");
-  if (titleBest && state.best > 0) titleBest.textContent = `Best ${state.best}`;
+  if (titleBest) titleBest.textContent = bestText(state.best);
   paintHud();
 
   const clock = new THREE.Clock();

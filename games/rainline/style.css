@@ -145,12 +145,22 @@ body.impact #flash { background: rgba(255, 244, 214, 0.38); opacity: 1; }
   font-size: 12px;
 }
 
-#alert, #remain, #kits {
+#alert, #remain, #kits, .status .best-stat, .status span {
   padding: 4px 8px;
   border-radius: 99px;
   border: 1px solid var(--border);
   background: rgba(22, 27, 34, 0.85);
 }
+
+.status .best-stat,
+.status .best-stat b {
+  color: var(--green-2);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border-color: var(--green);
+}
+
+.status .best-stat b { font-size: 14px; }
 
 #kits { color: var(--green-2); }
 
@@ -392,6 +402,30 @@ button:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
   color: var(--muted);
   font-family: var(--mono);
   font-size: 12px;
+}
+
+.best-line {
+  margin: 0 0 14px;
+  color: var(--green-2);
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.record {
+  margin: 0 0 8px;
+  color: var(--green-2);
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.scoreline {
+  margin: 0 0 14px;
+  font-family: var(--mono);
+  font-size: 18px;
 }
 
 .fail {

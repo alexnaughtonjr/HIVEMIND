@@ -25,4 +25,7 @@ Open `index.html` in a browser. WebGL is required. Three.js is the shared copy a
 - Blue beacon platforms save a checkpoint. Red sweep beams and a long fall return you there
 - Before the first beacon, a miss ends the run
 - The top of the shaft is a relay dish. Landing on that pad wins
-- The best score is saved in this browser under `games.uplink.best`
+
+## High scores
+
+The best score stays in this browser only, on this device (`localStorage` key `hivemind.highscore.uplink`). Higher is better. Height above the floor is 10 points per meter, and each blue core is 100. An older save under `games.uplink.best` is copied across the first time the game looks.
