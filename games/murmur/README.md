@@ -1,6 +1,8 @@
 # Murmur
 
-Lead a starling murmuration over a reed marsh at dusk. Thread eight amber rings, keep the flock together, and reach the roost oak before the sun sets.
+[![Murmur gameplay: a starling flock threads amber rings over a dusk marsh](media/preview.gif)](media/gameplay.mp4)
+
+Lead a starling murmuration over a reed marsh at dusk. Thread eight amber rings, keep the flock together, and reach the roost oak before the sun sets. The preview is a real flight. Select it for the MP4.
 
 ## Play
 
