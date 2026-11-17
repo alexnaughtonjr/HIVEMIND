@@ -2,6 +2,8 @@
 
 Small, free browser games. Each one is plain HTML, CSS, and JavaScript: no build step and no install. A new game lands on Mondays.
 
+https://thehivemindsolutions.com/
+
 ## Play live, free in your browser
 
 **[▶ Play the full collection](https://raw.githack.com/alexnaughtonjr/games/main/index.html)**
