@@ -1,14 +1,24 @@
 # Uplink
 
-![Uplink](media/poster.svg)
-
 Free custom game for Alexander Haislip. A 3D courier climb up a dark relay shaft.
 
 Jump a generated service stair cut into the shaft wall, pocket the blue cores, and land on the green relay pad. Striped lifts carry you, gust vents shove sideways, and green rings take a grapple zip. Missing a ledge ends the run.
 
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/uplink/index.html)**
+
+Free, no install.
+
+![Uplink](media/poster.svg)
+
 ## Play
 
-Open `index.html` in a browser. WebGL is required. Three.js is the shared copy at `../../shared/vendor/three.min.js`, and bloom comes from `../../shared/bloom.js`. Nothing is loaded from a CDN, and there is no build step.
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/uplink/index.html)**
+
+Free, no install. WebGL is required. Three.js is the shared copy at `../../shared/vendor/three.min.js`, and bloom comes from `../../shared/bloom.js`. Nothing is loaded from a CDN, and there is no build step.
+
+### Run locally (optional)
+
+Open `index.html` in a browser.
 
 ## Controls
 
@@ -25,4 +35,7 @@ Open `index.html` in a browser. WebGL is required. Three.js is the shared copy a
 - Blue beacon platforms save a checkpoint. Red sweep beams and a long fall return you there
 - Before the first beacon, a miss ends the run
 - The top of the shaft is a relay dish. Landing on that pad wins
-- The best score is saved in this browser under `games.uplink.best`
+
+## High scores
+
+The best score stays in this browser only, on this device (`localStorage` key `hivemind.highscore.uplink`). Higher is better. Height above the floor is 10 points per meter, and each blue core is 100. An older save under `games.uplink.best` is copied across the first time the game looks.

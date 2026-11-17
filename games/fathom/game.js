@@ -2,7 +2,8 @@
   "use strict";
 
   const $ = (id) => document.getElementById(id);
-  const HIGH_KEY = "games.fathom.best";
+  const SLUG = "fathom";
+  const LEGACY = "games.fathom.best";
 
   const ZONES = [
     {
@@ -77,19 +78,24 @@
 
   function readBest() {
     try {
-      const n = Number(localStorage.getItem(HIGH_KEY));
-      return Number.isFinite(n) && n > 0 ? Math.floor(n) : 0;
+      if (!window.HivemindHighscore) return null;
+      return window.HivemindHighscore.get(SLUG, LEGACY);
     } catch (err) {
-      return 0;
+      return null;
     }
   }
 
-  function writeBest(n) {
+  function commitBest(value) {
     try {
-      localStorage.setItem(HIGH_KEY, String(n));
+      if (!window.HivemindHighscore) return { best: null, improved: false };
+      return window.HivemindHighscore.submit(SLUG, value, { mode: "max", legacy: LEGACY });
     } catch (err) {
-      /* Private mode can block storage. The run still finishes. */
+      return { best: null, improved: false };
     }
+  }
+
+  function bestText(n) {
+    return "BEST: " + (n == null ? "—" : String(n));
   }
 
   function showFail() {
@@ -446,6 +452,8 @@
   const state = { mode: "title" };
   let zoneIndex = 0;
   let score = 0;
+  let best = readBest();
+  let bestAtStart = best;
   let battery = 100;
   let target = null;
   let tutorial = true;
@@ -493,9 +501,9 @@
   }
 
   function paintBest() {
-    const best = readBest();
-    $("titleBest").textContent = best > 0 ? "Best score " + best : "Best score saves in this browser.";
-    $("best").textContent = String(best);
+    const line = bestText(best);
+    $("titleBest").textContent = line;
+    $("best").textContent = line;
   }
 
   function paintCard() {
@@ -625,16 +633,19 @@
   function finish(won) {
     if (state.mode === "end") return;
     state.mode = "end";
-    const prev = readBest();
-    if (score > prev) writeBest(score);
-    const best = Math.max(prev, score);
-    $("best").textContent = String(best);
+    const prev = bestAtStart;
+    if (score > (best || 0)) {
+      const result = commitBest(score);
+      if (result.best != null) best = result.best;
+    }
+    const improved = score > (prev || 0);
     $("endKicker").textContent = won ? "survey filed" : "lamp dark";
     $("endTitle").textContent = won ? "Trench logged" : "Lamp dark";
     $("endText").textContent = won
       ? "Five zones, five animals. Leftover lamp charge is part of the score."
       : "The lamp died in the " + ZONES[zoneIndex].name.toLowerCase() + " zone, before the survey reached the vent worms.";
-    $("endScore").textContent = "Score " + score + (score > prev ? " · new best" : " · best " + best);
+    $("endScore").textContent = "Score " + score + " · Best " + (best == null ? "—" : best);
+    $("endRecord").classList.toggle("hidden", !improved);
     $("end").classList.remove("hidden");
     $("pause").classList.add("hidden");
     $("hint").classList.add("hidden");
@@ -682,6 +693,7 @@
     clearActors();
     zoneIndex = 0;
     score = 0;
+    bestAtStart = best;
     battery = 100;
     tutorial = true;
     grace = 1.6;

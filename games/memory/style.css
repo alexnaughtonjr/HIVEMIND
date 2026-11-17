@@ -112,6 +112,35 @@ h1 {
   font-weight: 650;
 }
 
+.stat-best {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  border-color: var(--green);
+  background: rgba(35, 134, 54, 0.16);
+}
+
+.stat-best .label {
+  display: inline;
+  color: #3fb950;
+}
+
+.stat-best strong {
+  color: #3fb950;
+  font-size: 16px;
+}
+
+.record {
+  margin: 0;
+  color: #3fb950;
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.record[hidden] { display: none !important; }
+
 .board-wrap {
   position: relative;
   flex: 1;

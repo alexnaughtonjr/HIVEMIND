@@ -143,17 +143,58 @@
     if (saved === "low" || saved === "high") quality = saved;
   } catch (err) { /* storage is optional */ }
   const touchAxis = { x: 0, y: 0 };
-  let runScore = 0;
-  let bestScore = 0;
-  try {
-    const n = Number(localStorage.getItem("games.rainline.best"));
-    if (Number.isFinite(n) && n > 0) bestScore = Math.floor(n);
-  } catch (err) { /* storage is optional */ }
   let snapCam = true;
   let dragging = false;
   let haveLast = false;
   let lastMX = 0;
   let lastMY = 0;
+
+  let score = 0;
+  let best = readBest();
+  let bestAtStart = best;
+
+  function readBest() {
+    try {
+      if (!window.HivemindHighscore) return null;
+      return window.HivemindHighscore.get("rainline");
+    } catch (err) {
+      return null;
+    }
+  }
+
+  function commitBest(value) {
+    try {
+      if (!window.HivemindHighscore) return { best: null, improved: false };
+      return window.HivemindHighscore.submit("rainline", value, { mode: "max" });
+    } catch (err) {
+      return { best: null, improved: false };
+    }
+  }
+
+  function bestText(n) {
+    return "BEST: " + (n == null ? "—" : String(n));
+  }
+
+  function paintBest() {
+    const bestNode = document.getElementById("best");
+    if (bestNode) bestNode.textContent = bestText(score > (best || 0) ? score : best);
+    const titleBest = document.getElementById("titleBest");
+    if (titleBest) titleBest.textContent = bestText(best);
+    const scoreNode = document.getElementById("score");
+    if (scoreNode) scoreNode.textContent = String(score);
+  }
+
+  function bankScore() {
+    if (score <= (best || 0)) {
+      paintBest();
+      return;
+    }
+    const result = commitBest(score);
+    best = result.best != null ? result.best : score;
+    paintBest();
+  }
+
+  paintBest();
 
   const rendererOk = boot();
   if (!rendererOk) return;
@@ -191,20 +232,6 @@
   });
   if (coarsePointer) document.body.classList.add("touch");
   wireTouch();
-  paintScore();
-
-  function paintScore() {
-    const s = document.getElementById("score");
-    const b = document.getElementById("best");
-    const titleBest = document.getElementById("titleBest");
-    if (s) s.textContent = String(runScore);
-    if (b) b.textContent = String(bestScore);
-    if (titleBest) {
-      titleBest.textContent = bestScore > 0
-        ? "Best score in this browser: " + bestScore
-        : "Best score saves in this browser.";
-    }
-  }
 
   function wireTouch() {
     const stick = document.getElementById("stick");
@@ -1213,6 +1240,9 @@
   }
 
   function begin() {
+    score = 0;
+    bestAtStart = best;
+    paintBest();
     started = true;
     paused = false;
     mode = "play";
@@ -1227,8 +1257,6 @@
     reticle.hidden = false;
     tipEl.hidden = false;
     tipUntil = performance.now() + 14000;
-    runScore = 0;
-    paintScore();
     unlockAudio();
   }
 
@@ -1256,8 +1284,6 @@
       k.mesh.visible = true;
       k.mesh.position.y = k.baseY;
     });
-    runScore = 0;
-    paintScore();
     leap = null;
     grapple = null;
     enemies.forEach((e, i) => {
@@ -2070,7 +2096,6 @@
     comboBar.style.transform = "scaleX(" + Math.min(1, player.combo / COMBO_NEED) + ")";
     comboN.textContent = "x" + player.combo;
     remainEl.textContent = living + " left";
-    paintScore();
     if (kitsEl) {
       const left = kits.filter((k) => !k.taken).length;
       kitsEl.textContent = left + (left === 1 ? " kit" : " kits");
@@ -2090,6 +2115,7 @@
     reticle.classList.toggle("lock", !!targetGrapple);
     if (tipUntil && now > tipUntil) tipEl.hidden = true;
     promptEl.textContent = currentPrompt();
+    paintBest();
   }
 
   function currentPrompt() {
@@ -2298,13 +2324,13 @@
 
   function killEnemy(e) {
     if (e.dead) return;
-    runScore += 100;
-    paintScore();
     e.dead = true;
     e.hp = 0;
     e.state = "dead";
     e.cone.visible = false;
     e.marker.visible = false;
+    score += 100 + player.combo * 25;
+    bankScore();
   }
 
   function damagePlayer(amount) {
@@ -2315,23 +2341,21 @@
   }
 
   function finish(win) {
+    if (ending) return;
     ending = true;
     paused = false;
     mode = win ? "won" : "dead";
+    if (win) score += 500;
+    bankScore();
+    const improved = score > (bestAtStart || 0);
     endEl.classList.remove("hidden");
-    if (win) runScore += Math.round(Math.max(0, player.hp));
-    let fresh = "";
-    if (runScore > bestScore) {
-      bestScore = runScore;
-      fresh = " New best.";
-      try { localStorage.setItem("games.rainline.best", String(bestScore)); } catch (err) { /* ignore */ }
-    }
-    paintScore();
     document.getElementById("endEyebrow").textContent = win ? "cleared" : "down";
     document.getElementById("endTitle").textContent = win ? "Block clear" : "The rain wins";
     document.getElementById("endText").textContent = win
-      ? "The alley crew is down. Score " + runScore + "." + fresh
-      : "You hit the pavement. Score " + runScore + "." + fresh;
+      ? "The alley crew is down. The block belongs to the rain again."
+      : "You hit the pavement. The crew still owns the block.";
+    document.getElementById("endScore").textContent = "Score " + score + " · Best " + (best == null ? "—" : best);
+    document.getElementById("endRecord").classList.toggle("hidden", !improved);
     if (win) {
       blip(440, 0.12, "sine", 0.05, 660);
       setTimeout(() => blip(660, 0.18, "sine", 0.05, 880), 140);

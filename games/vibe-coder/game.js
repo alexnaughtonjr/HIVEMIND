@@ -23,28 +23,34 @@
     { n: 2, coffee: 60 }, { n: 3, coffee: 55 }, { n: 4, coffee: 52 }, { n: 5, coffee: 50 }, { n: 6, coffee: 48 }
   ];
 
-  const HIGH_KEY = "games.vibeCoder.highScore";
+  const SLUG = "vibe-coder";
+  const LEGACY = "games.vibeCoder.highScore";
   const $ = id => document.getElementById(id);
   let lvl = 0, score = 0, combo = 1, coffee = 0, maxCoffee = 60;
   let active = [], sipped = false, timer = null, playing = false, paused = false, deckCards = [];
   let sceneApi = null, sprintTimer = null, endTimer = null, inRun = false;
-  let best = readHigh(), bestAtStart = best;
+  let best = readBest(), bestAtStart = best;
 
-  function readHigh() {
+  function readBest() {
     try {
-      const n = Number(localStorage.getItem(HIGH_KEY));
-      return Number.isFinite(n) && n > 0 ? Math.floor(n) : 0;
-    } catch {
-      return 0;
+      if (!window.HivemindHighscore) return null;
+      return window.HivemindHighscore.get(SLUG, LEGACY);
+    } catch (err) {
+      return null;
     }
   }
 
-  function writeHigh(n) {
+  function commitBest(value) {
     try {
-      localStorage.setItem(HIGH_KEY, String(n));
-    } catch {
-      /* private mode or blocked storage */
+      if (!window.HivemindHighscore) return { best: null, improved: false };
+      return window.HivemindHighscore.submit(SLUG, value, { mode: "max", legacy: LEGACY });
+    } catch (err) {
+      return { best: null, improved: false };
     }
+  }
+
+  function bestText(n) {
+    return "BEST: " + (n == null ? "—" : String(n));
   }
 
   const shuffle = a => {
@@ -78,14 +84,12 @@
     $("glitchCount").className = "pill" + (active.length ? "" : " ok");
     $("sip").disabled = sipped || paused;
     $("deploy").disabled = paused;
-    if (score > best) {
-      best = score;
-      writeHigh(best);
+    if (score > (best || 0)) {
+      const result = commitBest(score);
+      best = result.best != null ? result.best : score;
     }
-    $("best").textContent = String(best);
-    $("titleBest").textContent = best > 0
-      ? "Best score in this browser: " + best
-      : "Best score saves in this browser.";
+    $("best").textContent = bestText(best);
+    if ($("titleBest")) $("titleBest").textContent = bestText(best);
     const pauseBtn = $("pauseBtn");
     pauseBtn.disabled = !playing;
     pauseBtn.textContent = paused ? "Resume" : "Pause";
@@ -93,10 +97,10 @@
     if (sceneApi) sceneApi.setCoffee(Math.max(0, coffee / maxCoffee), coffee / maxCoffee < 0.25);
   }
 
-  function bestBlurb() {
-    if (score > bestAtStart) return "New best saved in this browser: " + score + ".";
-    if (best > 0) return "Best in this browser: " + best + ".";
-    return "Your best score will be saved in this browser.";
+  function paintEnd() {
+    const improved = score > (bestAtStart || 0);
+    $("endScore").textContent = "Score " + score + " · Best " + (best == null ? "—" : best);
+    $("endRecord").classList.toggle("hidden", !improved);
   }
 
   function hidePause() {
@@ -237,8 +241,8 @@
     if (sceneApi) sceneApi.setMood("lose");
     $("endTitle").textContent = "Coffee died ☠️";
     $("endText").textContent =
-      "You made it to sprint " + (lvl + 1) + " with " + score + " points. Brew another pot and try again.";
-    $("endBest").textContent = bestBlurb();
+      "You made it to sprint " + (lvl + 1) + ". Brew another pot and try again.";
+    paintEnd();
     clearTimeout(endTimer);
     endTimer = setTimeout(() => {
       if (!playing) show("end");
@@ -250,8 +254,8 @@
     if (sceneApi) sceneApi.setMood("win");
     $("endTitle").textContent = "Shipped all 5 sprints! 🚀";
     $("endText").textContent =
-      "Final score: " + score + ". Clean prompts, hot coffee, real deploys in 3D. That's how Alexander Haislip ships.";
-    $("endBest").textContent = bestBlurb();
+      "Clean prompts, hot coffee, real deploys in 3D. That's how Alexander Haislip ships.";
+    paintEnd();
     show("end");
   }
 
@@ -765,10 +769,8 @@
 
   sceneApi = initScene();
 
-  $("best").textContent = String(best);
-  $("titleBest").textContent = best > 0
-    ? "Best score in this browser: " + best
-    : "Best score saves in this browser.";
+  $("best").textContent = bestText(best);
+  $("titleBest").textContent = bestText(best);
   $("start").onclick = begin;
   $("again").onclick = begin;
   $("deploy").onclick = deploy;

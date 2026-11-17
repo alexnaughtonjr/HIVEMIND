@@ -19,6 +19,11 @@ html,body{margin:0;height:100%;height:100dvh;background:var(--bg);color:var(--fg
 }
 .brand{font-weight:700}.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--ok);margin-right:6px;box-shadow:0 0 10px var(--ok)}
 .stats span{margin-left:14px;color:var(--muted)}.stats b{color:var(--bright)}
+.stats .best-stat,.stats .best-stat b{color:var(--oktext);font-weight:700;letter-spacing:.04em}
+.stats .best-stat b{font-size:16px}
+.best-line{margin:0 0 14px;color:var(--oktext);font-family:var(--mono);font-size:18px;font-weight:700;letter-spacing:.08em}
+.record{margin:0 0 8px;color:var(--oktext);font-family:var(--mono);font-size:15px;font-weight:700;letter-spacing:.14em}
+.scoreline{margin:0 0 14px;font-family:var(--mono);font-size:18px;color:var(--bright)}
 .coffee-stat b{color:var(--link)}
 .stats .btn.tiny{margin-left:14px;padding:8px 12px;font-size:12px;line-height:1.2;min-height:44px}
 #paused.overlay{

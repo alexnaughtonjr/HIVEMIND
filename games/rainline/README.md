@@ -1,14 +1,24 @@
 # Rainline
 
-![Rainline](media/poster.svg)
-
 Free custom game for Alexander Haislip. An original stick vigilante on an original rainy night block.
 
 Chain strikes between alley crew, counter the red warning over a thug’s head, drop from the stone perch, grapple the glowing rings, glide between roofs, and use a stun disc and a smoke pellet. Green gutter kits on the street restore health when you walk over them while hurt. Clear the block for the win screen.
 
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/rainline/index.html)**
+
+Free, no install.
+
+![Rainline](media/poster.svg)
+
 ## Play
 
-Open `index.html` through a local static server. WebGL is required. Keyboard and mouse.
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/rainline/index.html)**
+
+Free, no install. WebGL is required. Keyboard and mouse.
+
+### Run locally (optional)
+
+Open `index.html` through a local static server.
 
 ```bash
 python3 -m http.server 8080
@@ -31,3 +41,7 @@ Then open `http://localhost:8080/games/rainline/`.
 - `Esc` pause
 
 Three.js r159 is vendored at `vendor/three.min.js`, and the bloom composer (`EffectComposer`, `UnrealBloomPass`, `OutputPass`) is vendored at `vendor/postprocessing.js`. Both are MIT. Nothing is loaded from a CDN at play time. High quality uses a soft moon shadow, two street-lamp shadow spots, and bloom. Low quality keeps the same fight with a lighter render.
+
+## High scores
+
+The best score stays in this browser only, on this device (`localStorage` key `hivemind.highscore.rainline`). Higher is better. A takedown scores 100 plus 25 times the current combo. Clearing the block adds 500. A run that ends on the pavement still keeps the takedown points.

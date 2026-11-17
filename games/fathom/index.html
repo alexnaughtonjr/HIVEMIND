@@ -31,7 +31,7 @@
     <div class="brand">fathom <span>/ survey</span></div>
     <div class="meters">
       <span>score <b id="score">0</b></span>
-      <span>best <b id="best">0</b></span>
+      <span class="best-stat"><b id="best">BEST: —</b></span>
       <span>depth <b id="depth">20 m</b></span>
       <span>lamp <span class="track"><span id="battBar"></span></span></span>
       <span id="zoneLabel">Sunlight</span>
@@ -52,7 +52,7 @@
         <li>Five logs complete the survey. Leftover lamp charge becomes bonus points. <kbd>P</kbd> pauses. <kbd>R</kbd> starts over.</li>
       </ul>
       <button id="start" type="button">Start the survey</button>
-      <p id="titleBest" class="credit">Best score saves in this browser.</p>
+      <p id="titleBest" class="best-line">BEST: —</p>
       <p class="credit"><a href="../../index.html">All games</a></p>
     </div>
   </section>
@@ -91,6 +91,7 @@
       <p class="eyebrow" id="endKicker">survey filed</p>
       <h1 id="endTitle">Trench logged</h1>
       <p class="lead" id="endText"></p>
+      <p class="record hidden" id="endRecord">NEW HIGH SCORE!</p>
       <p class="scoreline" id="endScore"></p>
       <button id="retry" type="button">Survey again</button>
       <p class="credit"><a href="../../index.html">All games</a></p>
@@ -99,6 +100,7 @@
 
   <p id="fail" class="fail hidden">This browser has no WebGL context, so Fathom cannot start. <a href="../../index.html">All games</a></p>
 
+  <script src="../shared/highscore.js"></script>
   <script src="../../shared/mobile.js"></script>
   <script src="../../shared/vendor/three.min.js"></script>
   <script src="../../shared/bloom.js"></script>

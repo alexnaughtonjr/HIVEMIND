@@ -1,6 +1,7 @@
 const COLS = 20;
 const ROWS = 20;
-const HIGH_KEY = "games.snake.highScore";
+const SLUG = "snake";
+const LEGACY = "games.snake.highScore";
 
 const canvas = document.getElementById("board");
 const ctx = canvas.getContext("2d");
@@ -13,6 +14,7 @@ const overlayText = document.getElementById("overlay-text");
 const pauseBtn = document.getElementById("pause");
 const restartBtn = document.getElementById("restart");
 const overlayRestart = document.getElementById("overlay-restart");
+const recordEl = document.getElementById("overlay-record");
 const pad = document.getElementById("pad");
 
 const DIRS = {
@@ -32,44 +34,58 @@ let dir = { x: 1, y: 0 };
 let dirQueue = [];
 let food = { x: 10, y: 10 };
 let score = 0;
-let high = readHigh();
+let high = readBest();
+let bestAtStart = high;
 let tickMs = 200;
 let acc = 0;
 let last = 0;
 let state = "ready";
 
-function readHigh() {
+function readBest() {
   try {
-    const n = Number(localStorage.getItem(HIGH_KEY));
-    return Number.isFinite(n) && n > 0 ? Math.floor(n) : 0;
-  } catch {
-    return 0;
+    if (!window.HivemindHighscore) return null;
+    return window.HivemindHighscore.get(SLUG, LEGACY);
+  } catch (err) {
+    return null;
   }
 }
 
-function writeHigh(n) {
+function commitBest(value) {
   try {
-    localStorage.setItem(HIGH_KEY, String(n));
-  } catch {
-    /* private mode or blocked storage */
+    if (!window.HivemindHighscore) return { best: null, improved: false };
+    return window.HivemindHighscore.submit(SLUG, value, { mode: "max", legacy: LEGACY });
+  } catch (err) {
+    return { best: null, improved: false };
   }
 }
 
-function showOverlay(title, text, actionLabel) {
+function bestText(n) {
+  return n == null ? "—" : String(n);
+}
+
+function noteScore() {
+  if (score <= (high || 0)) return;
+  const result = commitBest(score);
+  high = result.best != null ? result.best : score;
+}
+
+function showOverlay(title, text, actionLabel, record) {
   overlayTitle.textContent = title;
   overlayText.textContent = text;
   overlayRestart.hidden = !actionLabel;
   if (actionLabel) overlayRestart.textContent = actionLabel;
+  if (recordEl) recordEl.hidden = !record;
   overlay.hidden = false;
 }
 
 function hideOverlay() {
   overlay.hidden = true;
+  if (recordEl) recordEl.hidden = true;
 }
 
 function updateHud() {
   scoreEl.textContent = String(score);
-  bestEl.textContent = String(high);
+  bestEl.textContent = bestText(high);
   lengthEl.textContent = String(snake.length);
   pauseBtn.textContent =
     state === "paused" ? "Resume" : state === "running" ? "Pause" : state === "hold" ? "Steer" : "Start";
@@ -97,6 +113,7 @@ function freshSnake() {
   dir = { x: 1, y: 0 };
   dirQueue = [];
   score = 0;
+  bestAtStart = high;
   tickMs = 200;
   acc = 0;
   placeFood();
@@ -137,11 +154,14 @@ function togglePause() {
   updateHud();
 }
 
-function endGame(title, text) {
+function endGame(title, reason) {
   state = "over";
   dirQueue = [];
+  noteScore();
   updateHud();
-  showOverlay(title, text, "Play again");
+  const improved = score > (bestAtStart || 0);
+  const bestShown = high == null ? "—" : String(high);
+  showOverlay(title, reason + " Score " + score + " · Best " + bestShown + ".", "Play again", improved);
   overlayRestart.focus({ preventScroll: true });
 }
 
@@ -210,26 +230,23 @@ function step() {
   if (dirQueue.length) dir = dirQueue.shift();
   const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
   if (head.x < 0 || head.y < 0 || head.x >= COLS || head.y >= ROWS) {
-    endGame("Game over", "You hit the wall. Score " + score + ".");
+    endGame("Game over", "You hit the wall.");
     return;
   }
   const willEat = head.x === food.x && head.y === food.y;
   const body = willEat ? snake : snake.slice(0, -1);
   if (body.some((s) => s.x === head.x && s.y === head.y)) {
-    endGame("Game over", "You ran into yourself. Score " + score + ".");
+    endGame("Game over", "You ran into yourself.");
     return;
   }
   snake.unshift(head);
   if (willEat) {
     score += 10;
-    if (score > high) {
-      high = score;
-      writeHigh(high);
-    }
+    noteScore();
     tickMs = Math.max(80, 200 - Math.floor(score / 30) * 10);
     if (snake.length === COLS * ROWS) {
       updateHud();
-      endGame("Board clear", "You filled the grid. Score " + score + ".");
+      endGame("Board clear", "You filled the grid.");
       return;
     }
     placeFood();

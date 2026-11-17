@@ -1,10 +1,20 @@
 # Murmur
 
-[![Murmur gameplay: a starling flock threads amber rings over a dusk marsh](media/preview.gif)](media/gameplay.mp4)
-
 Lead a starling murmuration over a reed marsh at dusk. Thread eight amber rings, keep the flock together, and reach the roost oak before the sun sets. The preview is a real flight. Select it for the MP4.
 
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/murmur/index.html)**
+
+Free, no install.
+
+[![Murmur gameplay: a starling flock threads amber rings over a dusk marsh](media/preview.gif)](media/gameplay.mp4)
+
 ## Play
+
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/murmur/index.html)**
+
+Free, no install. WebGL is required. Three.js loads as an ES module from jsDelivr (`three@0.170.0`), so this game needs a network connection. There is no build step.
+
+### Run locally (optional)
 
 From the repository root:
 
@@ -12,7 +22,7 @@ From the repository root:
 python3 -m http.server 8080
 ```
 
-Open <http://localhost:8080/games/murmur/>. `npx serve .` works the same way. WebGL is required. Three.js loads as an ES module from jsDelivr (`three@0.170.0`), so this game needs a network connection. There is no build step.
+Open <http://localhost:8080/games/murmur/>. `npx serve .` works the same way.
 
 ## Controls
 
@@ -22,7 +32,10 @@ Open <http://localhost:8080/games/murmur/>. `npx serve .` works the same way. We
 - Dark posts marked with a red ribbon snag the flock. `Space` calls the birds tight and shortens the snag for a moment.
 - Reach the roost oak while at least one starling is still with you, before the sun meter empties.
 - `P` or `Esc` pauses. `R` starts the flight over. `M` mutes the chirps.
-- The best score stays in this browser under `games.murmur.best`.
+
+## High scores
+
+The best score stays in this browser only, on this device (`localStorage` key `hivemind.highscore.murmur`). Higher is better. Each ring is 300 while you fly. Reaching the oak adds 80 for every starling still with you and 30 for each second of daylight left. A scattered or darkened run keeps the ring points only. An older save under `games.murmur.best` is copied across the first time the game looks.
 
 ## Scoring
 

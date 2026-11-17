@@ -34,12 +34,13 @@
         <div><span class="label">Moves</span><strong id="moves">0</strong></div>
         <div><span class="label">Pairs</span><strong id="matches">0/8</strong></div>
         <div><span class="label">Time</span><strong id="time">0:00</strong></div>
-        <div><span class="label">Best</span><strong id="best">—</strong></div>
+        <div class="stat-best"><span class="label">Best:</span><strong id="best">—</strong></div>
       </div>
       <div class="board-wrap">
         <div id="grid" class="grid"></div>
         <div id="overlay" class="overlay" hidden>
           <h2 id="overlay-title">Cleared</h2>
+          <p id="overlay-record" class="record" hidden>NEW HIGH SCORE!</p>
           <p id="overlay-text"></p>
           <button id="overlay-restart" class="primary" type="button">Play again</button>
         </div>
@@ -47,9 +48,10 @@
       <div class="actions">
         <button id="restart" type="button">New game</button>
       </div>
-      <p class="help">Tap a card to start. Arrow keys and Enter work too. Best moves and time stay in this browser.</p>
+      <p class="help">Tap a card to start. Arrow keys and Enter work too. The fewest moves stay in this browser as your best.</p>
     </section>
   </main>
+  <script src="../shared/highscore.js"></script>
   <script src="../../shared/mobile.js"></script>
   <script src="game.js"></script>
 </body>
