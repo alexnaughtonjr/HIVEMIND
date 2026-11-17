@@ -1,11 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="play">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
   <meta name="theme-color" content="#0d1117">
-  <link rel="icon" href="data:,">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="description" content="Steer a growing snake, eat the blue pellets, and beat your best score. Touch pad, swipe, or keyboard.">
   <title>Snake</title>
+  <meta property="og:title" content="Snake">
+  <meta property="og:description" content="Steer a growing snake, eat the blue pellets, and beat your best score. Touch pad, swipe, or keyboard.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://raw.githack.com/alexnaughtonjr/games/main/games/snake/index.html">
+  <meta property="og:image" content="https://raw.githubusercontent.com/alexnaughtonjr/games/main/games/snake/media/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Snake">
+  <meta name="twitter:description" content="Steer a growing snake, eat the blue pellets, and beat your best score. Touch pad, swipe, or keyboard.">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/alexnaughtonjr/games/main/games/snake/media/og.png">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../../shared/mobile.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -39,9 +53,10 @@
         <button type="button" data-dir="down" aria-label="Down">↓</button>
         <button type="button" data-dir="right" aria-label="Right">→</button>
       </div>
-      <p class="help">Arrows or WASD choose a direction and start the run. A quick second turn is kept for the next step, and a reverse into your tail is ignored. Space pauses. R restarts to the ready screen. Play again deals a fresh board. Swipe the board on a touch screen. Best score stays in this browser.</p>
+      <p class="help">Tap Start, the pad, or swipe the board. Arrows or WASD steer. Space pauses. Best score stays in this browser.</p>
     </section>
   </main>
+  <script src="../../shared/mobile.js"></script>
   <script src="game.js"></script>
 </body>
 </html>
