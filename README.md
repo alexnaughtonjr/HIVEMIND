@@ -2,8 +2,6 @@
 
 Small, free browser games. Each one is plain HTML, CSS, and JavaScript: no build step and no install. A new game lands on Mondays.
 
-Open [index.html](index.html) and press Play, or open a game folder directly.
-
 ## Play live, free in your browser
 
 **[▶ Play the full collection](https://raw.githack.com/alexnaughtonjr/games/main/index.html)**
@@ -44,7 +42,7 @@ Lead a starling murmuration over a reed marsh. Thread eight amber rings, keep th
 | <a href="games/uplink/"><img src="games/uplink/media/poster.svg" alt="Uplink" width="180"></a> | [Uplink](https://raw.githack.com/alexnaughtonjr/games/main/games/uplink/index.html) ([source](games/uplink/)) | Climb a relay shaft. Ride lifts, zip to green rings, and light the dish. | A D or arrows. Space jumps. Q hooks. |
 | <a href="games/slab/"><img src="games/slab/media/poster.svg" alt="Slab" width="180"></a> | [Slab](https://raw.githack.com/alexnaughtonjr/games/main/games/slab/index.html) ([source](games/slab/)) | Drop glass slabs in a kiln. Keep the overlap and catch the embers. | Space, click, or Drop. P pauses. |
 
-## Run locally
+## Run locally (optional)
 
 ```bash
 git clone https://github.com/alexnaughtonjr/games.git
@@ -52,7 +50,7 @@ cd games
 python3 -m http.server 8080
 ```
 
-Open <http://localhost:8080/>. `npx serve .` serves the same tree. Opening `index.html` from the file system also works for the vendored games. Snake and Memory Match stay fully offline. The 3D games need WebGL. Fathom, Rainline, Uplink, Slab, and Vibe Coder ship a copy of Three.js in the repo. Murmur loads Three.js as an ES module from jsDelivr, so that game needs a network connection and a local server.
+Open <http://localhost:8080/>. You can also open [index.html](index.html) and press Play, or open a game folder directly. `npx serve .` serves the same tree. Opening `index.html` from the file system also works for the vendored games. Snake and Memory Match stay fully offline. The 3D games need WebGL. Fathom, Rainline, Uplink, Slab, and Vibe Coder ship a copy of Three.js in the repo. Murmur loads Three.js as an ES module from jsDelivr, so that game needs a network connection and a local server.
 
 On the collection page, press 1–8 to open Snake, Memory Match, Vibe Coder, Rainline, Uplink, Slab, Fathom, or Murmur.
 

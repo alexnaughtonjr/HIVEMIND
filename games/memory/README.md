@@ -1,10 +1,20 @@
 # Memory Match
 
-![Memory Match](media/poster.svg)
-
 Sixteen cards, eight pairs. Flip two at a time and remember where each shape landed. The clock starts on the first flip.
 
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/memory/index.html)**
+
+Free, no install.
+
+![Memory Match](media/poster.svg)
+
 ## Play
+
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/memory/index.html)**
+
+Free, no install.
+
+### Run locally (optional)
 
 Open `index.html`. No build step, no network, and the file protocol works.
 
