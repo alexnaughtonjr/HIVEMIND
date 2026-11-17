@@ -199,6 +199,18 @@
       font-weight: 650;
     }
 
+    .card-best,
+    .week .card-best {
+      margin: 0;
+      color: #3fb950;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    .card-best[hidden] { display: none !important; }
+
     kbd {
       display: inline-block;
       min-width: 1.4em;
@@ -241,6 +253,7 @@
         <p class="eyebrow">Game of the week</p>
         <h2 id="week-title">Murmur</h2>
         <p>Lead a starling murmuration over a reed marsh. Thread the amber rings and reach the roost before the sun sets.</p>
+        <p class="card-best" data-slug="murmur" data-legacy="games.murmur.best" hidden>BEST: —</p>
         <div class="actions">
           <a class="play" href="games/murmur/index.html">Play</a>
           <a class="ghost" href="games/murmur/media/gameplay.mp4">Watch the MP4</a>
@@ -255,6 +268,7 @@
           <div class="body">
             <h2>Snake</h2>
             <p>Steer a growing snake, eat the blue pellets, and beat the best score saved in this browser.</p>
+            <span class="card-best" data-slug="snake" data-legacy="games.snake.highScore" hidden>BEST: —</span>
             <span class="controls"><kbd>1</kbd>Arrows or WASD. Swipe or the pad.</span>
             <span class="play-label">Play</span>
           </div>
@@ -266,6 +280,7 @@
           <div class="body">
             <h2>Memory Match</h2>
             <p>Flip cards, remember eight pairs, and finish in as few moves as you can.</p>
+            <span class="card-best" data-slug="memory" data-legacy="games.memory.bestMoves" data-suffix=" moves" hidden>BEST: —</span>
             <span class="controls"><kbd>2</kbd>Click, or arrows and Enter.</span>
             <span class="play-label">Play</span>
           </div>
@@ -277,6 +292,7 @@
           <div class="body">
             <h2>Vibe Coder</h2>
             <p>Clear glitchy landing-page shards in 3D and deploy before the coffee runs dry.</p>
+            <span class="card-best" data-slug="vibe-coder" data-legacy="games.vibeCoder.highScore" hidden>BEST: —</span>
             <span class="controls"><kbd>3</kbd>Prompts 1–8. Enter deploys.</span>
             <span class="play-label">Play</span>
           </div>
@@ -288,6 +304,7 @@
           <div class="body">
             <h2>Rainline</h2>
             <p>A stick vigilante on a rainy night block. Chain strikes, counter, and clear the crew.</p>
+            <span class="card-best" data-slug="rainline" hidden>BEST: —</span>
             <span class="controls"><kbd>4</kbd>WASD and mouse. J strikes.</span>
             <span class="play-label">Play</span>
           </div>
@@ -299,6 +316,7 @@
           <div class="body">
             <h2>Uplink</h2>
             <p>Climb a 3D relay shaft. Ride lifts, zip to green rings, and light the dish.</p>
+            <span class="card-best" data-slug="uplink" data-legacy="games.uplink.best" hidden>BEST: —</span>
             <span class="controls"><kbd>5</kbd>A D move. Space jumps. Q hooks.</span>
             <span class="play-label">Play</span>
           </div>
@@ -310,6 +328,7 @@
           <div class="body">
             <h2>Slab</h2>
             <p>Drop glowing slabs in a 3D kiln. Keep the overlap and catch the amber embers.</p>
+            <span class="card-best" data-slug="slab" data-legacy="games.slab.best" hidden>BEST: —</span>
             <span class="controls"><kbd>6</kbd>Space, click, or Drop.</span>
             <span class="play-label">Play</span>
           </div>
@@ -321,6 +340,7 @@
           <div class="body">
             <h2>Fathom</h2>
             <p>Log a moon jelly, a lanternfish, an angler, a dumbo octopus, and a vent worm.</p>
+            <span class="card-best" data-slug="fathom" data-legacy="games.fathom.best" hidden>BEST: —</span>
             <span class="controls"><kbd>7</kbd>WASD or the stick. Catch the ring.</span>
             <span class="play-label">Play</span>
           </div>
@@ -332,6 +352,7 @@
           <div class="body">
             <h2>Murmur</h2>
             <p>Lead a starling flock through eight amber rings and reach the roost oak before sunset.</p>
+            <span class="card-best" data-slug="murmur" data-legacy="games.murmur.best" hidden>BEST: —</span>
             <span class="controls"><kbd>8</kbd>WASD or the stick. Space calls.</span>
             <span class="play-label">Play</span>
           </div>
@@ -340,6 +361,24 @@
     </ul>
     <footer>Press 1–8 to open a game. Primer dark · #0d1117 / #161b22 · #238636 · #58a6ff</footer>
   </main>
+  <script src="games/shared/highscore.js"></script>
+  <script>
+    if (window.HivemindHighscore) {
+      document.querySelectorAll(".card-best").forEach((el) => {
+        const slug = el.getAttribute("data-slug");
+        if (!slug) return;
+        let value = null;
+        try {
+          value = window.HivemindHighscore.get(slug, el.getAttribute("data-legacy") || undefined);
+        } catch (err) {
+          value = null;
+        }
+        if (value == null) return;
+        el.hidden = false;
+        el.textContent = "BEST: " + value + (el.getAttribute("data-suffix") || "");
+      });
+    }
+  </script>
   <script>
     const jumps = {
       "1": "games/snake/index.html",
