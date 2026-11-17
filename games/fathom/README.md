@@ -14,7 +14,10 @@ Open `index.html` in a browser. WebGL is required. Three.js is the shared copy a
 - Other animals and rock spires drain the lamp. From the midnight zone down, a hot vent pushes the lamp sideways.
 - Each logged animal restores charge. Five zones complete the survey, and leftover charge becomes bonus points.
 - `P` or `Esc` pauses. `R` starts a fresh survey.
-- The best score stays in this browser under `games.fathom.best`.
+
+## High scores
+
+The best score stays in this browser only, on this device (`localStorage` key `hivemind.highscore.fathom`). Higher is better. Each logged animal scores 100 plus 30 times the zone index, leftover lamp charge adds 4 points per unit, and a collision costs 15. The saved number is the score when the survey ends, because hits can spend points you had already earned. An older save under `games.fathom.best` is copied across the first time the game looks.
 
 ## Zones
 

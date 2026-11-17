@@ -31,3 +31,7 @@ Then open `http://localhost:8080/games/rainline/`.
 - `Esc` pause
 
 Three.js r159 is vendored at `vendor/three.min.js`, and the bloom composer (`EffectComposer`, `UnrealBloomPass`, `OutputPass`) is vendored at `vendor/postprocessing.js`. Both are MIT. Nothing is loaded from a CDN at play time. High quality uses a soft moon shadow, two street-lamp shadow spots, and bloom. Low quality keeps the same fight with a lighter render.
+
+## High scores
+
+The best score stays in this browser only, on this device (`localStorage` key `hivemind.highscore.rainline`). Higher is better. A takedown scores 100 plus 25 times the current combo. Clearing the block adds 500. A run that ends on the pavement still keeps the takedown points.
