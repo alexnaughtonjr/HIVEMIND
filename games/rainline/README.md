@@ -8,7 +8,7 @@ Chain strikes between alley crew, counter the red warning over a thug’s head, 
 
 ## Play
 
-Open `index.html` through a local static server, or play the GitHub Pages build. WebGL is required. Keyboard and mouse.
+Open `index.html` through a local static server. WebGL is required. Keyboard and mouse.
 
 ```bash
 python3 -m http.server 8080

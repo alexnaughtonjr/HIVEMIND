@@ -32,8 +32,8 @@ Lead a starling murmuration over a reed marsh. Thread eight amber rings, keep th
 ## Run locally
 
 ```bash
-git clone https://github.com/alexnaughtonjr/games.git
-cd games
+git clone https://github.com/alexnaughtonjr/HIVEMIND.git
+cd HIVEMIND
 python3 -m http.server 8080
 ```
 
@@ -67,7 +67,3 @@ Pages use the GitHub Primer dark palette:
 - Blue accent `#58a6ff`
 
 Body text uses Inter, then the system UI stack. Titles, scores, and labels use JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace. Snake, Memory Match, Rainline, Uplink, Slab, Fathom, and Murmur do not download fonts. Vibe Coder requests Inter and JetBrains Mono from Google Fonts and falls back to that same stack.
-
-## GitHub Pages
-
-`.github/workflows/pages.yml` publishes the repository root on every push to `main`. When Pages is enabled with GitHub Actions as the source, the collection is at `https://alexnaughtonjr.github.io/games/` and Murmur is at `https://alexnaughtonjr.github.io/games/games/murmur/`.

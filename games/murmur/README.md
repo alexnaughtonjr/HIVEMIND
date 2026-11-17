@@ -14,8 +14,6 @@ python3 -m http.server 8080
 
 Open <http://localhost:8080/games/murmur/>. `npx serve .` works the same way. WebGL is required. Three.js loads as an ES module from jsDelivr (`three@0.170.0`), so this game needs a network connection. There is no build step.
 
-On GitHub Pages: <https://alexnaughtonjr.github.io/games/games/murmur/>
-
 ## Controls
 
 - `A` `D` or the left and right arrows bank. `W` `S` or the up and down arrows climb and dive.
