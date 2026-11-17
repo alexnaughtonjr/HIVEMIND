@@ -66,6 +66,7 @@ let t0 = 0;
 let timerId = null;
 let mismatchTimer = null;
 let bestMoves = readBest();
+let memoryHiddenAt = 0;
 
 function readBest() {
   try {
@@ -178,7 +179,15 @@ function deal() {
       '<span class="card-inner"><span class="face back"></span><span class="face front">' +
       card.svg +
       "</span></span>";
-    btn.addEventListener("click", () => flip(i));
+    btn.addEventListener("pointerup", (e) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    flip(i);
+  });
+  btn.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    e.preventDefault();
+    flip(i);
+  });
     grid.appendChild(btn);
     return btn;
   });
@@ -241,4 +250,15 @@ grid.addEventListener("keydown", (e) => {
 
 restartBtn.addEventListener("click", deal);
 overlayRestart.addEventListener("click", deal);
+document.addEventListener("visibilitychange", () => {
+  if (!started || matches === FACES.length) return;
+  if (document.hidden) {
+    memoryHiddenAt = performance.now();
+    stopTimer();
+  } else if (memoryHiddenAt) {
+    t0 += performance.now() - memoryHiddenAt;
+    memoryHiddenAt = 0;
+    timerId = setInterval(updateHud, 200);
+  }
+});
 deal();

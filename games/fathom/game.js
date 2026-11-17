@@ -111,13 +111,15 @@
   }
 
   const canvas = $("view");
+  const coarse = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 820;
+  if (coarse) document.body.classList.add("touch");
   let renderer;
   try {
     renderer = new THREE.WebGLRenderer({
       canvas,
-      antialias: true,
+      antialias: !coarse,
       alpha: false,
-      powerPreference: "high-performance"
+      powerPreference: coarse ? "low-power" : "high-performance"
     });
   } catch (err) {
     showFail();
@@ -140,8 +142,6 @@
 
   const camera = new THREE.PerspectiveCamera(52, 1, 0.08, 80);
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const coarse = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 820;
-  if (coarse) document.body.classList.add("touch");
 
   scene.add(new THREE.HemisphereLight(0x9ec9e0, 0x0d1117, 0.55));
   const key = new THREE.DirectionalLight(0xd6ecff, 0.85);
@@ -414,11 +414,13 @@
 
   let bloom = null;
   function fit() {
-    const w = Math.max(1, window.innerWidth);
-    const h = Math.max(1, window.innerHeight);
+    const box = window.viewSize ? window.viewSize() : { w: window.innerWidth, h: window.innerHeight };
+    const w = box.w;
+    const h = box.h;
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+    const mobile = document.body.classList.contains("touch") || w < 820;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1.5 : 2));
     renderer.setSize(w, h, false);
   }
   fit();
@@ -438,6 +440,7 @@
     if (bloom) bloom.resize();
   }
   window.addEventListener("resize", resize);
+  window.addEventListener("orientationchange", resize);
   if (bloom) bloom.resize();
 
   const player = { x: 0, z: 0, vx: 0, vz: 0 };
@@ -764,6 +767,9 @@
     stick.x = 0;
     stick.z = 0;
     stick.id = null;
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden && state.mode === "play") pause();
   });
 
   const pad = $("stick");

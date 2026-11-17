@@ -123,7 +123,7 @@ function beginReady() {
   freshSnake();
   state = "ready";
   updateHud();
-  showOverlay("Ready", "Press an arrow key, WASD, or swipe. Start reveals the board.", "Start");
+  showOverlay("Ready", "Tap Start, swipe, or press a direction.", "Start");
 }
 
 function revealBoard() {
@@ -141,7 +141,7 @@ function restart() {
 function togglePause() {
   if (state === "over" || state === "hold") return;
   if (state === "ready") {
-    revealBoard();
+    launch(1, 0);
     return;
   }
   if (state === "paused") {
@@ -181,10 +181,7 @@ function launch(nx, ny) {
 function playAgain() {
   if (state === "over") {
     freshSnake();
-    state = "hold";
-    hideOverlay();
-    updateHud();
-    canvas.focus({ preventScroll: true });
+    launch(1, 0);
     return;
   }
   revealBoard();
@@ -323,10 +320,12 @@ function draw() {
 
 function resize() {
   const wrap = canvas.parentElement;
-  const size = Math.max(240, Math.floor(wrap.clientWidth));
+  const size = Math.max(120, Math.floor(Math.min(wrap.clientWidth, wrap.clientHeight)));
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   canvas.width = Math.floor(size * dpr);
   canvas.height = Math.floor(size * dpr);
+  canvas.style.width = size + "px";
+  canvas.style.height = size + "px";
   cell = canvas.width / COLS;
   draw();
 }
@@ -372,7 +371,14 @@ pauseBtn.addEventListener("click", () => {
   else togglePause();
 });
 restartBtn.addEventListener("click", restart);
-overlayRestart.addEventListener("click", playAgain);
+overlayRestart.addEventListener("click", () => {
+  if (state === "ready") launch(1, 0);
+  else playAgain();
+});
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden && state === "running") togglePause();
+});
+window.addEventListener("orientationchange", () => setTimeout(resize, 200));
 
 pad.addEventListener("pointerdown", (e) => {
   const btn = e.target.closest("button");

@@ -1,11 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="play">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
   <meta name="theme-color" content="#0d1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="description" content="A stick vigilante on a rainy night block. Chain strikes, counter, and clear the crew. Fully playable by touch.">
   <title>Rainline</title>
+  <meta property="og:title" content="Rainline">
+  <meta property="og:description" content="A stick vigilante on a rainy night block. Chain strikes, counter, and clear the crew. Fully playable by touch.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://raw.githack.com/alexnaughtonjr/games/main/games/rainline/index.html">
+  <meta property="og:image" content="https://raw.githubusercontent.com/alexnaughtonjr/games/main/games/rainline/media/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Rainline">
+  <meta name="twitter:description" content="A stick vigilante on a rainy night block. Chain strikes, counter, and clear the crew. Fully playable by touch.">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/alexnaughtonjr/games/main/games/rainline/media/og.png">
   <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../../shared/mobile.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -82,7 +96,7 @@
     <div class="card">
       <p class="eyebrow">paused</p>
       <h1>Rainline</h1>
-      <p class="lead">Click resume, then click the scene if the mouse is free. Esc pauses even when the pointer is not locked.</p>
+      <p class="lead">The rain is waiting. Resume, then drag the scene to look. The on-screen buttons cover every move.</p>
       <button id="resume" type="button">Resume</button>
       <p class="credit"><a class="back" href="../../index.html">All games</a></p>
     </div>
@@ -101,9 +115,27 @@
     </div>
   </section>
 
+  <div id="touch">
+    <div id="stick" role="slider" aria-label="Move" aria-valuemin="-1" aria-valuemax="1" aria-valuenow="0">
+      <span id="nub"></span>
+    </div>
+    <p id="lookHint">Drag the scene to look</p>
+    <div id="actions">
+      <button type="button" data-act="smoke">Smoke</button>
+      <button type="button" data-act="disc">Disc</button>
+      <button type="button" data-act="finisher">Finish</button>
+      <button type="button" data-act="drop">Drop</button>
+      <button type="button" data-act="hook">Hook</button>
+      <button type="button" data-act="counter">Counter</button>
+      <button type="button" data-act="jump">Jump</button>
+      <button type="button" data-act="strike" class="strike">Strike</button>
+    </div>
+  </div>
+
   <p id="fail" class="fail hidden">This browser has no WebGL context, so Rainline cannot start. <a class="back" href="../../index.html">All games</a></p>
 
   <script src="../shared/highscore.js"></script>
+  <script src="../../shared/mobile.js"></script>
   <script src="vendor/three.min.js"></script>
   <script src="vendor/postprocessing.js"></script>
   <script src="game.js"></script>

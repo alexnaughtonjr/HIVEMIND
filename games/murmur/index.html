@@ -1,21 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="play">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
   <meta name="theme-color" content="#0d1117">
-  <meta name="description" content="Murmur: lead a starling flock through amber rings over a dusk marsh and reach the roost before the sun sets.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="description" content="Lead a starling flock through amber rings over a dusk marsh and reach the roost before the sun sets.">
   <title>Murmur</title>
+  <meta property="og:title" content="Murmur">
+  <meta property="og:description" content="Lead a starling flock through amber rings over a dusk marsh and reach the roost before the sun sets.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://raw.githack.com/alexnaughtonjr/games/main/games/murmur/index.html">
+  <meta property="og:image" content="https://raw.githubusercontent.com/alexnaughtonjr/games/main/games/murmur/media/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Murmur">
+  <meta name="twitter:description" content="Lead a starling flock through amber rings over a dusk marsh and reach the roost before the sun sets.">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/alexnaughtonjr/games/main/games/murmur/media/og.png">
   <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../../shared/mobile.css">
   <link rel="stylesheet" href="style.css">
-  <script type="importmap">
-  {
-    "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"
-    }
-  }
-  </script>
-  <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js">
 </head>
 <body>
   <canvas id="view" aria-label="Murmur marsh"></canvas>
@@ -44,9 +49,9 @@
       <p class="sub">Eight rings</p>
       <p class="lead">Lead a starling murmuration over a reed marsh. Thread the amber rings, keep the flock together, and reach the roost oak before the sun sets.</p>
       <ul class="howto">
-        <li><kbd>A</kbd> <kbd>D</kbd> or the arrows bank. <kbd>W</kbd> <kbd>S</kbd> climb and dive. Move the mouse, or drag the stick on a touch screen.</li>
+        <li><kbd>A</kbd> <kbd>D</kbd> or the arrows bank. <kbd>W</kbd> <kbd>S</kbd> climb and dive. Drag the stick, or drag on the marsh.</li>
         <li>Fly through each amber ring. A ring folds four more starlings into the flock.</li>
-        <li>Dark posts with a red ribbon snag birds. <kbd>Space</kbd> calls the flock tight for a short slip.</li>
+        <li>Dark posts with a red ribbon snag birds. <kbd>Space</kbd> or Call pulls the flock tight for a short slip.</li>
         <li>Reach the oak with starlings still beside you. <kbd>P</kbd> pauses. <kbd>R</kbd> starts over.</li>
       </ul>
       <button id="start" type="button" disabled>Loading the marsh…</button>
@@ -59,9 +64,10 @@
   <p id="callout" class="callout hidden" aria-live="polite"></p>
 
   <div id="touch">
-    <div id="stick" aria-label="Steer">
+    <div id="stick" role="slider" aria-label="Steer" aria-valuemin="-1" aria-valuemax="1" aria-valuenow="0">
       <div id="nub"></div>
     </div>
+    <button id="callBtn" type="button">Call</button>
   </div>
 
   <section id="pause" class="overlay hidden">
@@ -92,6 +98,8 @@
   <p id="fail" class="fail hidden">This browser has no WebGL context, so Murmur cannot start. <a href="../../index.html">All games</a></p>
 
   <script src="../shared/highscore.js"></script>
-  <script type="module" src="game.js"></script>
+  <script src="../../shared/mobile.js"></script>
+  <script src="../../shared/vendor/three.min.js"></script>
+  <script src="game.js"></script>
 </body>
 </html>

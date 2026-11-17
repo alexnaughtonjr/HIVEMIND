@@ -1,11 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="play">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
   <meta name="theme-color" content="#0d1117">
-  <link rel="icon" href="data:,">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="description" content="Flip cards, remember eight pairs, and finish in as few moves as you can.">
   <title>Memory Match</title>
+  <meta property="og:title" content="Memory Match">
+  <meta property="og:description" content="Flip cards, remember eight pairs, and finish in as few moves as you can.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://raw.githack.com/alexnaughtonjr/games/main/games/memory/index.html">
+  <meta property="og:image" content="https://raw.githubusercontent.com/alexnaughtonjr/games/main/games/memory/media/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Memory Match">
+  <meta name="twitter:description" content="Flip cards, remember eight pairs, and finish in as few moves as you can.">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/alexnaughtonjr/games/main/games/memory/media/og.png">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../../shared/mobile.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -34,10 +48,11 @@
       <div class="actions">
         <button id="restart" type="button">New game</button>
       </div>
-      <p class="help">Tap a card, or use the arrow keys and Enter. The fewest moves stay in this browser as your best.</p>
+      <p class="help">Tap a card to start. Arrow keys and Enter work too. The fewest moves stay in this browser as your best.</p>
     </section>
   </main>
   <script src="../shared/highscore.js"></script>
+  <script src="../../shared/mobile.js"></script>
   <script src="game.js"></script>
 </body>
 </html>

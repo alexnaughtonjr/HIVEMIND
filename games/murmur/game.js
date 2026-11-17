@@ -1,5 +1,3 @@
-import * as THREE from "three";
-
 const $ = (id) => document.getElementById(id);
 const SLUG = "murmur";
 const LEGACY = "games.murmur.best";
@@ -132,6 +130,7 @@ const held = new Set();
 const pressed = new Set();
 const mouse = { x: 0, y: 0, on: false };
 const touch = { x: 0, y: 0, on: false };
+let touchCall = false;
 let pointerZero = null;
 
 window.addEventListener("keydown", (e) => {
@@ -218,26 +217,51 @@ function thud() {
   osc.stop(t + 0.24);
 }
 
+function mobileGpu() {
+  return document.body.classList.contains("touch") || window.innerWidth < 820;
+}
+
+function pixelCap() {
+  return Math.min(window.devicePixelRatio || 1, mobileGpu() ? 1.5 : 2);
+}
+
 function boot() {
+  if (typeof THREE === "undefined") {
+    showFail("This browser could not load the 3D library, so Murmur cannot start.");
+    return;
+  }
   if (!hasWebGL()) {
     showFail("This browser has no WebGL context, so Murmur cannot start.");
     return;
   }
 
   const canvas = $("view");
-  const renderer = new THREE.WebGLRenderer({
-    canvas,
-    antialias: false,
-    alpha: false,
-    powerPreference: "high-performance",
-    failIfMajorPerformanceCaveat: false
-  });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  const phone = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 820;
+  if (phone) document.body.classList.add("touch");
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: false,
+      alpha: false,
+      powerPreference: phone ? "low-power" : "high-performance",
+      failIfMajorPerformanceCaveat: false
+    });
+  } catch (err) {
+    showFail("This browser has no WebGL context, so Murmur cannot start.");
+    return;
+  }
+  if (!renderer.getContext()) {
+    showFail("This browser has no WebGL context, so Murmur cannot start.");
+    return;
+  }
+  renderer.setPixelRatio(pixelCap());
+  const view = window.viewSize ? window.viewSize() : { w: window.innerWidth, h: window.innerHeight };
+  renderer.setSize(view.w, view.h);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.08;
-  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.enabled = !phone;
   renderer.shadowMap.type = THREE.PCFShadowMap;
 
   const scene = new THREE.Scene();
@@ -250,8 +274,8 @@ function boot() {
   scene.add(hemi);
 
   const sun = new THREE.DirectionalLight(0xffc090, 3.1);
-  sun.castShadow = true;
-  sun.shadow.mapSize.set(512, 512);
+  sun.castShadow = !phone;
+  sun.shadow.mapSize.set(phone ? 256 : 512, phone ? 256 : 512);
   sun.shadow.camera.near = 1;
   sun.shadow.camera.far = 90;
   sun.shadow.camera.left = -28;
@@ -561,7 +585,9 @@ function boot() {
   }
 
   function simulate(dt) {
-    if (consume("Space") && state.callCd <= 0) {
+    const wantCall = consume("Space") || touchCall;
+    touchCall = false;
+    if (wantCall && state.callCd <= 0) {
       state.call = 1.15;
       state.callCd = 2.45;
       chirp(640, 0.1, 0.03);
@@ -890,6 +916,14 @@ function boot() {
     if (state.mode === "play") setMode("pause");
   });
   $("muteBtn").addEventListener("click", toggleMute);
+  const callBtn = $("callBtn");
+  if (callBtn) {
+    callBtn.addEventListener("pointerdown", (e) => {
+      e.preventDefault();
+      touchCall = true;
+      audio();
+    });
+  }
 
   canvas.addEventListener("pointermove", (e) => {
     if (e.pointerType === "touch") return;
@@ -909,12 +943,16 @@ function boot() {
   wireStick();
   wireDrag(canvas);
 
-  window.addEventListener("resize", () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
+  function resizeView() {
+    const box = window.viewSize ? window.viewSize() : { w: window.innerWidth, h: window.innerHeight };
+    camera.aspect = box.w / box.h;
     camera.updateProjectionMatrix();
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
+    renderer.setPixelRatio(pixelCap());
+    renderer.setSize(box.w, box.h);
+  }
+  window.addEventListener("resize", resizeView);
+  window.addEventListener("orientationchange", resizeView);
+  resizeView();
 
   document.addEventListener("visibilitychange", () => {
     frame.last = performance.now();
@@ -1513,7 +1551,9 @@ function wireDrag(canvas) {
   canvas.addEventListener("pointercancel", end);
 }
 
-if (!hasWebGL()) {
+if (typeof THREE === "undefined") {
+  showFail("This browser could not load the 3D library, so Murmur cannot start.");
+} else if (!hasWebGL()) {
   showFail("This browser has no WebGL context, so Murmur cannot start.");
 } else {
   boot();
