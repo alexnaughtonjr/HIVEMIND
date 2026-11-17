@@ -2,10 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
   <meta name="theme-color" content="#0d1117">
-  <link rel="icon" href="data:,">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="description" content="Small, free browser games. Nothing to install. Play Murmur, Fathom, Snake, and more on your phone.">
   <title>Games</title>
+  <meta property="og:title" content="Games">
+  <meta property="og:description" content="Small, free browser games. Nothing to install. Play Murmur, Fathom, Snake, and more on your phone.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://raw.githack.com/alexnaughtonjr/games/main/index.html">
+  <meta property="og:image" content="https://raw.githubusercontent.com/alexnaughtonjr/games/main/media/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Games">
+  <meta name="twitter:description" content="Small, free browser games. Nothing to install. Play Murmur, Fathom, Snake, and more on your phone.">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/alexnaughtonjr/games/main/media/og.png">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="shared/mobile.css">
   <style>
     :root {
       --bg: #0d1117;
@@ -22,9 +36,12 @@
 
     * { box-sizing: border-box; }
 
+    html, body { overscroll-behavior: none; }
+
     body {
       margin: 0;
       min-height: 100vh;
+      min-height: 100dvh;
       background:
         radial-gradient(900px 420px at 10% -10%, rgba(35, 134, 54, 0.18), transparent 60%),
         radial-gradient(700px 380px at 100% 0%, rgba(88, 166, 255, 0.12), transparent 55%),
@@ -37,7 +54,7 @@
     .page {
       width: min(1120px, calc(100% - 32px));
       margin: 0 auto;
-      padding: 56px 0 64px;
+      padding: calc(32px + env(safe-area-inset-top)) 0 calc(48px + env(safe-area-inset-bottom));
     }
 
     .eyebrow {
@@ -109,12 +126,16 @@
     }
 
     .play, .ghost {
-      display: inline-block;
-      padding: 8px 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 10px 16px;
       border-radius: 8px;
       font-size: 14px;
       font-weight: 650;
       text-decoration: none;
+      touch-action: manipulation;
     }
 
     .play { background: var(--green); color: #fff; }
@@ -191,13 +212,16 @@
     .play-label {
       align-self: flex-start;
       margin-top: 4px;
-      padding: 6px 12px;
+      padding: 10px 16px;
+      min-height: 44px;
       border-radius: 6px;
       background: var(--green);
       color: #ffffff;
       font-size: 14px;
       font-weight: 650;
     }
+
+    .games a.card { touch-action: manipulation; }
 
     kbd {
       display: inline-block;
@@ -340,6 +364,7 @@
     </ul>
     <footer>Press 1–8 to open a game. Primer dark · #0d1117 / #161b22 · #238636 · #58a6ff</footer>
   </main>
+  <script src="shared/mobile.js"></script>
   <script>
     const jumps = {
       "1": "games/snake/index.html",
