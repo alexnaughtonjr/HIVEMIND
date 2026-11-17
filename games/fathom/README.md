@@ -1,10 +1,22 @@
 # Fathom
 
-[![Fathom gameplay: the lamp logs a moon jelly, then lines up a lanternfish](media/preview.gif)](media/gameplay.mp4)
-
 Pilot a research lamp down a dark trench and log one animal from each ocean zone before the lamp goes dark.
 
-Open `index.html` in a browser. WebGL is required. Three.js is the shared copy at `../../shared/vendor/three.min.js`. Bloom comes from `../../shared/bloom.js`, and the sounds come from `../../shared/juice.js`. Nothing is loaded from a CDN, and there is no build step.
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/fathom/index.html)**
+
+Free, no install.
+
+[![Fathom gameplay: the lamp logs a moon jelly, then lines up a lanternfish](media/preview.gif)](media/gameplay.mp4)
+
+## Play
+
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/fathom/index.html)**
+
+Free, no install. WebGL is required. Three.js is the shared copy at `../../shared/vendor/three.min.js`. Bloom comes from `../../shared/bloom.js`, and the sounds come from `../../shared/juice.js`. Nothing is loaded from a CDN, and there is no build step.
+
+### Run locally (optional)
+
+Open `index.html` in a browser.
 
 ## Controls
 
