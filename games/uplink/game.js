@@ -85,9 +85,15 @@
   const sparkLife = new Float32Array(56);
 
   const canvas = $("view");
+  const coarse = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 820;
   let renderer;
   try {
-    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+    renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: !coarse,
+      alpha: false,
+      powerPreference: coarse ? "low-power" : "high-performance"
+    });
   } catch (err) {
     $("fail").classList.remove("hidden");
     return;
@@ -97,12 +103,11 @@
     return;
   }
 
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, coarse ? 1.5 : 2));
   renderer.setSize(window.innerWidth, window.innerHeight, false);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
-  renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.setClearColor(0x0d1117, 1);
 
@@ -116,8 +121,9 @@
   scene.add(new THREE.HemisphereLight(0x9aa4b2, 0x0d1117, 0.38));
   const key = new THREE.DirectionalLight(0xe6edf3, 1.55);
   key.position.set(2.4, 12, 7);
-  key.castShadow = true;
-  key.shadow.mapSize.set(1024, 1024);
+  key.castShadow = !coarse;
+  key.shadow.mapSize.set(coarse ? 512 : 1024, coarse ? 512 : 1024);
+  renderer.shadowMap.enabled = !coarse;
   key.shadow.camera.near = 0.5;
   key.shadow.camera.far = 26;
   key.shadow.camera.left = -7.5;
@@ -227,6 +233,10 @@
   }
 
   window.addEventListener("resize", resize);
+  window.addEventListener("orientationchange", () => setTimeout(resize, 200));
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden && state.mode === "run") togglePause();
+  });
   resize();
 
   const clock = new THREE.Clock();
@@ -421,8 +431,11 @@
   }
 
   function resize() {
-    const w = window.innerWidth;
-    const h = window.innerHeight;
+    const box = window.viewSize ? window.viewSize() : { w: window.innerWidth, h: window.innerHeight };
+    const w = box.w;
+    const h = box.h;
+    const mobile = window.matchMedia("(pointer: coarse)").matches || w < 820;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1.5 : 2));
     renderer.setSize(w, h, false);
     camera.aspect = w / Math.max(1, h);
     camera.updateProjectionMatrix();

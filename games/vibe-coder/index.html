@@ -1,12 +1,24 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="play">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#0d1117">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<meta name="description" content="Clear glitchy landing-page shards in 3D and deploy before the coffee runs dry.">
 <title>Vibe Coder: Ship Before Coffee Dies</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<meta property="og:title" content="Vibe Coder: Ship Before Coffee Dies">
+<meta property="og:description" content="Clear glitchy landing-page shards in 3D and deploy before the coffee runs dry.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://raw.githack.com/alexnaughtonjr/games/main/games/vibe-coder/index.html">
+<meta property="og:image" content="https://raw.githubusercontent.com/alexnaughtonjr/games/main/games/vibe-coder/media/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Vibe Coder: Ship Before Coffee Dies">
+<meta name="twitter:description" content="Clear glitchy landing-page shards in 3D and deploy before the coffee runs dry.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/alexnaughtonjr/games/main/games/vibe-coder/media/og.png">
+<link rel="stylesheet" href="../../shared/mobile.css">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -32,7 +44,7 @@
       <p class="lead">You’re at a neon Primer desk with a glitchy landing page floating in 3D. Chain the right AI prompts, clear every glitch shard, and hit <b>Deploy</b> before the coffee in the mug runs dry.</p>
       <ul class="howto">
         <li>Five sprints. Each drops a broken page with more glitches and less coffee.</li>
-        <li>Pick a prompt (click / tap a card or press <kbd>1</kbd>–<kbd>8</kbd>). Real fixes clear shards and build combo.</li>
+        <li>Pick a prompt (tap a card or press <kbd>1</kbd>–<kbd>8</kbd>). Real fixes clear shards and build combo.</li>
         <li>Junk prompts burn coffee and reset combo. One <b>Sip</b> per sprint (<kbd>S</kbd>) adds 10s.</li>
         <li>All clear? <b>Deploy</b> (<kbd>Enter</kbd>). Leftover coffee becomes bonus points.</li>
         <li><kbd>Space</kbd> or <kbd>P</kbd> pauses the timer and freezes the desk. <kbd>R</kbd> restarts the run. Best score stays in this browser.</li>
@@ -95,6 +107,8 @@
     </div>
   </section>
 </div>
+<p id="fail" class="fail" hidden>This browser has no WebGL context, so Vibe Coder cannot start. <a class="back" href="../../index.html">All games</a></p>
+<script src="../../shared/mobile.js"></script>
 <script src="vendor/three.min.js"></script>
 <script src="game.js"></script>
 </body>

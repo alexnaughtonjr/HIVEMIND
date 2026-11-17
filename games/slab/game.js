@@ -34,13 +34,14 @@
   }
 
   const canvas = $("view");
+  const coarse = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 820;
   let renderer;
   try {
     renderer = new THREE.WebGLRenderer({
       canvas,
-      antialias: true,
+      antialias: !coarse,
       alpha: false,
-      powerPreference: "high-performance"
+      powerPreference: coarse ? "low-power" : "high-performance"
     });
   } catch (err) {
     showFail();
@@ -51,7 +52,7 @@
     return;
   }
 
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, coarse ? 1.5 : 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.12;
@@ -227,15 +228,18 @@
   }
 
   function resize() {
-    const w = Math.max(1, window.innerWidth);
-    const h = Math.max(1, window.innerHeight);
+    const box = window.viewSize ? window.viewSize() : { w: window.innerWidth, h: window.innerHeight };
+    const w = Math.max(1, box.w);
+    const h = Math.max(1, box.h);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+    const mobile = window.matchMedia("(pointer: coarse)").matches || w < 820;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1.5 : 2));
     renderer.setSize(w, h, false);
     if (bloom) bloom.resize();
   }
   window.addEventListener("resize", resize);
+  window.addEventListener("orientationchange", () => setTimeout(resize, 200));
   resize();
 
   const BASE = 3.05;
@@ -254,6 +258,9 @@
     callout: 0,
     shake: 0
   };
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden && state.mode === "play") togglePause();
+  });
   const stack = [];
   const debris = [];
   let mover = null;

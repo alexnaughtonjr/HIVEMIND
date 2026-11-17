@@ -138,7 +138,15 @@
       b.className = "card";
       b.innerHTML = '<span class="k">[' + (i + 1) + "]</span>";
       b.appendChild(document.createTextNode(c.t));
-      b.onclick = () => play(i);
+      b.addEventListener("pointerup", (e) => {
+        if (e.pointerType === "mouse" && e.button !== 0) return;
+        play(i);
+      });
+      b.addEventListener("keydown", (e) => {
+        if (e.key !== "Enter" && e.key !== " ") return;
+        e.preventDefault();
+        play(i);
+      });
       c.el = b;
       deck.appendChild(b);
     });
@@ -265,17 +273,52 @@
   }
 
   // ---------- Three.js scene ----------
+  function showFail() {
+    const fail = $("fail");
+    if (fail) fail.hidden = false;
+    const title = $("title");
+    if (title) title.classList.add("hidden");
+  }
+
   function initScene() {
     if (typeof THREE === "undefined") {
-      console.error("THREE missing");
+      showFail();
+      return null;
+    }
+    const probe = document.createElement("canvas");
+    let gl = null;
+    try {
+      gl = probe.getContext("webgl2") || probe.getContext("webgl");
+    } catch (err) {
+      gl = null;
+    }
+    if (!gl) {
+      showFail();
       return null;
     }
     const canvas = $("c3d");
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    const coarse = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 900;
+    let renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: !coarse,
+        alpha: false,
+        powerPreference: coarse ? "low-power" : "high-performance"
+      });
+    } catch (err) {
+      showFail();
+      return null;
+    }
+    if (!renderer.getContext()) {
+      showFail();
+      return null;
+    }
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, coarse ? 1.5 : 2));
+    const box = window.viewSize ? window.viewSize() : { w: window.innerWidth, h: window.innerHeight };
+    renderer.setSize(box.w, box.h);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.enabled = !coarse;
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x0d1117);
@@ -288,7 +331,7 @@
     scene.add(new THREE.AmbientLight(0x8b949e, 0.35));
     const key = new THREE.DirectionalLight(0xffffff, 1.1);
     key.position.set(4, 8, 5);
-    key.castShadow = true;
+    key.castShadow = renderer.shadowMap.enabled;
     scene.add(key);
     const fill = new THREE.PointLight(0x58a6ff, 1.4, 20);
     fill.position.set(-3, 2.5, 2);
@@ -632,12 +675,15 @@
     function setPaused(p) { scenePaused = !!p; }
 
     function onResize() {
-      const w = window.innerWidth, h = window.innerHeight;
-      camera.aspect = w / h;
+      const box = window.viewSize ? window.viewSize() : { w: window.innerWidth, h: window.innerHeight };
+      camera.aspect = box.w / box.h;
       camera.updateProjectionMatrix();
-      renderer.setSize(w, h);
+      const mobile = window.matchMedia("(pointer: coarse)").matches || box.w < 900;
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1.5 : 2));
+      renderer.setSize(box.w, box.h);
     }
     window.addEventListener("resize", onResize);
+    window.addEventListener("orientationchange", onResize);
 
     function animate() {
       requestAnimationFrame(animate);
@@ -754,6 +800,10 @@
     if (/^[1-8]$/.test(e.key)) play(+e.key - 1);
     else if (e.key === "Enter") deploy();
     else if (key === "s") sip();
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden && playing && !paused) togglePause();
   });
 
   if (/[?&]autostart=1/.test(location.search)) {

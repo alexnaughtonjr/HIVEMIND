@@ -99,7 +99,8 @@
   let rain;
   let rainPos;
   let rainCount = 0;
-  let quality = "high";
+  const coarsePointer = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 900;
+  let quality = coarsePointer ? "low" : "high";
   let composer = null;
   let bloomPass = null;
   let moon = null;
@@ -138,7 +139,15 @@
   const MOON_BASE = 1.22;
   let actx = null;
   try {
-    if (localStorage.getItem("rainline.quality") === "low") quality = "low";
+    const saved = localStorage.getItem("rainline.quality");
+    if (saved === "low" || saved === "high") quality = saved;
+  } catch (err) { /* storage is optional */ }
+  const touchAxis = { x: 0, y: 0 };
+  let runScore = 0;
+  let bestScore = 0;
+  try {
+    const n = Number(localStorage.getItem("games.rainline.best"));
+    if (Number.isFinite(n) && n > 0) bestScore = Math.floor(n);
   } catch (err) { /* storage is optional */ }
   let snapCam = true;
   let dragging = false;
@@ -151,12 +160,10 @@
 
   document.getElementById("start").addEventListener("click", () => {
     begin();
-    canvas.requestPointerLock();
   });
   document.getElementById("resume").addEventListener("click", () => {
     paused = false;
     pauseEl.classList.add("hidden");
-    canvas.requestPointerLock();
   });
   document.getElementById("hudPause").addEventListener("click", () => {
     pauseGame();
@@ -171,24 +178,115 @@
     endEl.classList.add("hidden");
     resetSimulation();
     begin();
-    canvas.requestPointerLock();
   });
 
   window.addEventListener("keydown", onKeyDown);
   window.addEventListener("keyup", (e) => { keys[e.code] = false; });
   window.addEventListener("blur", () => { for (const k in keys) keys[k] = false; });
   canvas.addEventListener("contextmenu", (e) => e.preventDefault());
-  canvas.addEventListener("mousedown", onMouseDown);
-  window.addEventListener("mouseup", () => { dragging = false; haveLast = false; });
-  window.addEventListener("mousemove", onMouseMove);
-  document.addEventListener("pointerlockchange", onLockChange);
   window.addEventListener("resize", resize);
+  window.addEventListener("orientationchange", () => setTimeout(resize, 200));
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden && started && !ending && !paused) pauseGame();
+  });
+  if (coarsePointer) document.body.classList.add("touch");
+  wireTouch();
+  paintScore();
+
+  function paintScore() {
+    const s = document.getElementById("score");
+    const b = document.getElementById("best");
+    const titleBest = document.getElementById("titleBest");
+    if (s) s.textContent = String(runScore);
+    if (b) b.textContent = String(bestScore);
+    if (titleBest) {
+      titleBest.textContent = bestScore > 0
+        ? "Best score in this browser: " + bestScore
+        : "Best score saves in this browser.";
+    }
+  }
+
+  function wireTouch() {
+    const stick = document.getElementById("stick");
+    const nub = document.getElementById("nub");
+    if (stick && nub) {
+      let id = null;
+      function move(e) {
+        const rect = stick.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        let dx = (e.clientX - cx) / (rect.width * 0.36);
+        let dy = (e.clientY - cy) / (rect.height * 0.36);
+        const mag = Math.hypot(dx, dy) || 1;
+        if (mag > 1) { dx /= mag; dy /= mag; }
+        if (Math.hypot(dx, dy) < 0.12) { dx = 0; dy = 0; }
+        touchAxis.x = dx;
+        touchAxis.y = -dy;
+        stick.setAttribute("aria-valuenow", touchAxis.x.toFixed(2));
+        nub.style.transform = "translate(" + (dx * 36) + "px," + (dy * 36) + "px)";
+      }
+      function end(e) {
+        if (e.pointerId !== id) return;
+        id = null;
+        touchAxis.x = 0;
+        touchAxis.y = 0;
+        stick.setAttribute("aria-valuenow", "0");
+        nub.style.transform = "translate(0,0)";
+      }
+      stick.addEventListener("pointerdown", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        id = e.pointerId;
+        try { stick.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
+        unlockAudio();
+        move(e);
+      });
+      stick.addEventListener("pointermove", (e) => {
+        if (e.pointerId !== id) return;
+        move(e);
+      });
+      stick.addEventListener("pointerup", end);
+      stick.addEventListener("pointercancel", end);
+    }
+    document.querySelectorAll("#actions button").forEach((btn) => {
+      const act = btn.dataset.act;
+      btn.addEventListener("pointerdown", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        unlockAudio();
+        if (!started || paused || ending) return;
+        if (act === "strike") tryAttack();
+        if (act === "counter") tryCounter();
+        if (act === "finisher") tryFinisher();
+        if (act === "hook") tryGrapple();
+        if (act === "drop") tryTakedown();
+        if (act === "disc") tryDisc();
+        if (act === "smoke") trySmoke();
+        if (act === "jump") {
+          keys.Space = true;
+          if (player.onGround && mode === "play") {
+            player.vy = 7.6;
+            player.onGround = false;
+          }
+        }
+      });
+      function release(e) {
+        if (act === "jump") keys.Space = false;
+      }
+      btn.addEventListener("pointerup", release);
+      btn.addEventListener("pointercancel", release);
+    });
+  }
   resize();
   requestAnimationFrame(frame);
 
   function boot() {
     try {
-      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: "high-performance" });
+      renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: !coarsePointer,
+        powerPreference: coarsePointer ? "low-power" : "high-performance"
+      });
     } catch (err) {
       document.getElementById("fail").classList.remove("hidden");
       return false;
@@ -1050,11 +1148,11 @@
 
   function applyQuality() {
     const high = quality === "high";
-    const pr = Math.min(window.devicePixelRatio || 1, high ? 1.25 : 1);
+    const pr = Math.min(window.devicePixelRatio || 1, high ? 1.25 : 1, 2);
     renderer.setPixelRatio(pr);
     renderer.toneMappingExposure = high ? 1.05 : 1.16;
     if (moon) {
-      const size = high ? 2048 : 1024;
+      const size = high ? 2048 : 512;
       moon.shadow.mapSize.set(size, size);
       if (moon.shadow.map) {
         moon.shadow.map.dispose();
@@ -1129,6 +1227,8 @@
     reticle.hidden = false;
     tipEl.hidden = false;
     tipUntil = performance.now() + 14000;
+    runScore = 0;
+    paintScore();
     unlockAudio();
   }
 
@@ -1156,6 +1256,8 @@
       k.mesh.visible = true;
       k.mesh.position.y = k.baseY;
     });
+    runScore = 0;
+    paintScore();
     leap = null;
     grapple = null;
     enemies.forEach((e, i) => {
@@ -1188,7 +1290,9 @@
     paused = true;
     for (const k in keys) keys[k] = false;
     pauseEl.classList.remove("hidden");
-    if (document.pointerLockElement) document.exitPointerLock();
+    touchAxis.x = 0;
+    touchAxis.y = 0;
+    keys.Space = false;
     setTimeout(focusResume, 0);
   }
 
@@ -1206,7 +1310,6 @@
     if (e.repeat) return;
     if (e.code === "Enter" && !started && !ending) {
       begin();
-      canvas.requestPointerLock();
       return;
     }
     if (!started || paused || ending) return;
@@ -1223,46 +1326,43 @@
     }
   }
 
-  function onMouseDown(e) {
-    if (!started || ending) {
-      if (!started && !ending) canvas.requestPointerLock();
-      return;
-    }
-    if (paused) return;
-    if (document.pointerLockElement !== canvas) {
-      dragging = true;
-      canvas.requestPointerLock();
-    }
-    if (e.button === 0) tryAttack();
-    if (e.button === 2) tryCounter();
-  }
+  let lookId = null;
+  let lookX = 0;
+  let lookY = 0;
 
-  function onMouseMove(e) {
-    if (document.pointerLockElement === canvas) {
-      applyLook(e.movementX, e.movementY);
-      return;
-    }
-    if (!dragging) { haveLast = false; return; }
-    if (haveLast) applyLook(e.clientX - lastMX, e.clientY - lastMY);
-    lastMX = e.clientX;
-    lastMY = e.clientY;
-    haveLast = true;
-  }
-
-  function applyLook(dx, dy) {
-    cam.yaw -= dx * 0.0022;
-    cam.pitch -= dy * 0.0018;
+  function applyLook(dx, dy, sens) {
+    const s = sens || 0.0022;
+    cam.yaw -= dx * s;
+    cam.pitch -= dy * s * 0.82;
     cam.pitch = Math.max(-0.65, Math.min(0.75, cam.pitch));
   }
 
-  function onLockChange() {
-    const locked = document.pointerLockElement === canvas;
-    if (!locked && started && !ending && !paused && (mode === "play" || mode === "grapple" || mode === "leap")) {
-      pauseGame();
-    } else if (!locked && paused) {
-      setTimeout(focusResume, 0);
+  canvas.addEventListener("pointerdown", (e) => {
+    if (e.pointerType === "mouse" && e.button === 2) {
+      if (started && !paused && !ending) tryCounter();
+      return;
     }
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    if (!started || paused || ending) return;
+    lookId = e.pointerId;
+    lookX = e.clientX;
+    lookY = e.clientY;
+    try { canvas.setPointerCapture(e.pointerId); } catch (err) { /* already released */ }
+    if (e.pointerType === "mouse") tryAttack();
+  });
+  canvas.addEventListener("pointermove", (e) => {
+    if (e.pointerId !== lookId) return;
+    const sens = e.pointerType === "touch" ? 0.0042 : 0.0022;
+    applyLook(e.clientX - lookX, e.clientY - lookY, sens);
+    lookX = e.clientX;
+    lookY = e.clientY;
+  });
+  function endLook(e) {
+    if (e.pointerId !== lookId) return;
+    lookId = null;
   }
+  canvas.addEventListener("pointerup", endLook);
+  canvas.addEventListener("pointercancel", endLook);
 
   function frame(now) {
     try {
@@ -1327,10 +1427,10 @@
     const forward = new THREE.Vector3(Math.sin(cam.yaw), 0, Math.cos(cam.yaw));
     const right = new THREE.Vector3().crossVectors(forward, new THREE.Vector3(0, 1, 0));
     const wish = new THREE.Vector3();
-    if (keys.KeyW) wish.add(forward);
-    if (keys.KeyS) wish.sub(forward);
-    if (keys.KeyD) wish.add(right);
-    if (keys.KeyA) wish.sub(right);
+    const forwardAmt = (keys.KeyW ? 1 : 0) - (keys.KeyS ? 1 : 0) + touchAxis.y;
+    const strafeAmt = (keys.KeyD ? 1 : 0) - (keys.KeyA ? 1 : 0) + touchAxis.x;
+    wish.addScaledVector(forward, forwardAmt);
+    wish.addScaledVector(right, strafeAmt);
     const perchDist = flatDist(player.pos, PERCH);
     player.perched = perchDist < 2.4 && Math.abs(player.pos.y - PERCH.y) < 0.9;
     const speed = player.perched ? 2.2 : 6.6;
@@ -1970,6 +2070,7 @@
     comboBar.style.transform = "scaleX(" + Math.min(1, player.combo / COMBO_NEED) + ")";
     comboN.textContent = "x" + player.combo;
     remainEl.textContent = living + " left";
+    paintScore();
     if (kitsEl) {
       const left = kits.filter((k) => !k.taken).length;
       kitsEl.textContent = left + (left === 1 ? " kit" : " kits");
@@ -2197,6 +2298,8 @@
 
   function killEnemy(e) {
     if (e.dead) return;
+    runScore += 100;
+    paintScore();
     e.dead = true;
     e.hp = 0;
     e.state = "dead";
@@ -2215,13 +2318,20 @@
     ending = true;
     paused = false;
     mode = win ? "won" : "dead";
-    if (document.pointerLockElement) document.exitPointerLock();
     endEl.classList.remove("hidden");
+    if (win) runScore += Math.round(Math.max(0, player.hp));
+    let fresh = "";
+    if (runScore > bestScore) {
+      bestScore = runScore;
+      fresh = " New best.";
+      try { localStorage.setItem("games.rainline.best", String(bestScore)); } catch (err) { /* ignore */ }
+    }
+    paintScore();
     document.getElementById("endEyebrow").textContent = win ? "cleared" : "down";
     document.getElementById("endTitle").textContent = win ? "Block clear" : "The rain wins";
     document.getElementById("endText").textContent = win
-      ? "The alley crew is down. The block belongs to the rain again."
-      : "You hit the pavement. The crew still owns the block.";
+      ? "The alley crew is down. Score " + runScore + "." + fresh
+      : "You hit the pavement. Score " + runScore + "." + fresh;
     if (win) {
       blip(440, 0.12, "sine", 0.05, 660);
       setTimeout(() => blip(660, 0.18, "sine", 0.05, 880), 140);
@@ -2245,8 +2355,9 @@
   }
 
   function resize() {
-    const w = window.innerWidth;
-    const h = window.innerHeight;
+    const box = window.viewSize ? window.viewSize() : { w: window.innerWidth, h: window.innerHeight };
+    const w = box.w;
+    const h = box.h;
     renderer.setSize(w, h, false);
     if (composer) composer.setSize(w, h);
     camera.aspect = w / Math.max(1, h);
