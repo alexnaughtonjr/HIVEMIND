@@ -27,6 +27,8 @@
       </label>
     </div>
     <div class="status">
+      <span class="best-stat"><b id="best">BEST: —</b></span>
+      <span>score <b id="score">0</b></span>
       <span id="alert">hidden</span>
       <span id="remain">6 left</span>
       <span id="kits">3 kits</span>
@@ -68,6 +70,7 @@
       <h1>Rainline</h1>
       <p class="sub">Stick Vigilante</p>
       <p class="lead">A rainy night on an original block. Chain strikes between the alley crew, counter the red warning over a thug’s head, drop from the stone perch, and grapple the neon rings. Green gutter kits on the street put health back when you walk over them while hurt.</p>
+      <p id="titleBest" class="best-line">BEST: —</p>
       <button id="start" type="button">Start the vigil</button>
       <p class="actions"><button id="titleQuality" class="ghost" type="button">Quality: High</button></p>
       <p class="credit"><a class="back" href="../../index.html">All games</a></p>
@@ -90,6 +93,8 @@
       <p class="eyebrow" id="endEyebrow">cleared</p>
       <h1 id="endTitle">Block clear</h1>
       <p class="lead" id="endText"></p>
+      <p class="record hidden" id="endRecord">NEW HIGH SCORE!</p>
+      <p class="scoreline" id="endScore"></p>
       <button id="retry" type="button">Run it back</button>
       <p class="credit"><a class="back" href="../../index.html">All games</a></p>
       <p class="credit">Free custom game for Alexander Haislip</p>
@@ -98,6 +103,7 @@
 
   <p id="fail" class="fail hidden">This browser has no WebGL context, so Rainline cannot start. <a class="back" href="../../index.html">All games</a></p>
 
+  <script src="../shared/highscore.js"></script>
   <script src="vendor/three.min.js"></script>
   <script src="vendor/postprocessing.js"></script>
   <script src="game.js"></script>
