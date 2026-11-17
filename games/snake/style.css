@@ -95,6 +95,38 @@ h1 {
   font-weight: 650;
 }
 
+.stat-best {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  border-color: var(--green);
+  background: rgba(35, 134, 54, 0.16);
+}
+
+.stat-best .label {
+  display: inline;
+}
+
+.stat-best .label,
+.stat-best strong {
+  color: var(--green-bright);
+}
+
+.stat-best strong {
+  letter-spacing: 0.02em;
+}
+
+.record {
+  margin: 0;
+  color: var(--green-bright);
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.record[hidden] { display: none !important; }
+
 .board-wrap {
   position: relative;
   width: min(100%, 520px);

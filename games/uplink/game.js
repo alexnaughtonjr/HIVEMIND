@@ -26,12 +26,14 @@
     { x: 0.85, y: 10.1, w: 2.7 }
   ];
 
-  const HIGH_KEY = "games.uplink.best";
+  const SLUG = "uplink";
+  const LEGACY = "games.uplink.best";
   const keys = new Set();
   let jumpEdge = false;
   let jumpRelease = false;
   const stick = { active: false, x: 0, pointer: null };
   let best = readBest();
+  let bestAtStart = best;
 
   const state = {
     mode: "title",
@@ -234,6 +236,7 @@
 
   function startRun() {
     if (state.mode === "run") return;
+    bestAtStart = best;
     state.mode = "run";
     state.maxY = platforms[0].y + platforms[0].h;
     state.floorY = state.maxY;
@@ -333,30 +336,41 @@
 
   function readBest() {
     try {
-      const n = Number(localStorage.getItem(HIGH_KEY));
-      return Number.isFinite(n) && n > 0 ? Math.floor(n) : 0;
+      if (!window.HivemindHighscore) return null;
+      return window.HivemindHighscore.get(SLUG, LEGACY);
     } catch (err) {
-      return 0;
+      return null;
     }
   }
 
-  function writeBest(n) {
-    try { localStorage.setItem(HIGH_KEY, String(n)); } catch (err) { /* private mode */ }
+  function commitBest(value) {
+    try {
+      if (!window.HivemindHighscore) return { best: null, improved: false };
+      return window.HivemindHighscore.submit(SLUG, value, { mode: "max", legacy: LEGACY });
+    } catch (err) {
+      return { best: null, improved: false };
+    }
+  }
+
+  function bestText(n) {
+    return "BEST: " + (n == null ? "—" : String(n));
   }
 
   function noteBest() {
     if (state.mode !== "run" && state.mode !== "over" && state.mode !== "win") return;
     const score = currentScore();
-    if (score <= best) return;
-    best = score;
-    writeBest(best);
+    if (score <= (best || 0)) return;
+    const result = commitBest(score);
+    best = result.best != null ? result.best : score;
     paintBest();
   }
 
   function paintBest() {
-    const line = best > 0 ? "Best score " + best + " is saved in this browser." : "Best score saves in this browser.";
-    $("titleBest").textContent = line;
-    $("best").textContent = String(best);
+    const line = bestText(best);
+    const title = $("titleBest");
+    if (title) title.textContent = line;
+    const el = $("best");
+    if (el) el.textContent = line;
   }
 
   function restart() {
@@ -377,10 +391,12 @@
     const score = currentScore();
     const coreWord = state.cores === 1 ? "core" : "cores";
     noteBest();
-    const bestBit = " Best " + best + ".";
+    const improved = score > (bestAtStart || 0);
     $("endText").textContent = won
-      ? "The relay pad is lit. " + meters + "m up, " + state.cores + " " + coreWord + ", score " + score + "." + bestBit
-      : "The shaft took the lamp at " + meters + "m. Score " + score + ". " + state.cores + " " + coreWord + " banked." + bestBit;
+      ? "The relay pad is lit. " + meters + "m up, " + state.cores + " " + coreWord + " banked."
+      : "The shaft took the lamp at " + meters + "m. " + state.cores + " " + coreWord + " banked.";
+    $("endScore").textContent = "Score " + score + " · Best " + (best == null ? "—" : best);
+    $("endRecord").classList.toggle("hidden", !improved);
     $("end").classList.remove("hidden");
   }
 

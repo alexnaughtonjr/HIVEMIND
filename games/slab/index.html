@@ -17,7 +17,7 @@
     <div class="brand">slab <span>/ kiln</span></div>
     <div class="meters">
       <span>score <b id="score">0</b></span>
-      <span>best <b id="best">0</b></span>
+      <span class="best-stat"><b id="best">BEST: —</b></span>
       <span>floors <b id="floors">0</b></span>
       <span>streak <b id="streak">0</b></span>
     </div>
@@ -38,7 +38,7 @@
         <li><kbd>P</kbd> pauses. <kbd>R</kbd> starts a fresh tower. The best score stays in this browser.</li>
       </ul>
       <button id="start" type="button">Start stacking</button>
-      <p id="titleBest" class="credit">Best score saves in this browser.</p>
+      <p id="titleBest" class="best-line">BEST: —</p>
       <p class="credit"><a href="../../index.html">All games</a></p>
     </div>
   </section>
@@ -67,6 +67,7 @@
       <p class="eyebrow">kiln cracked</p>
       <h1>Missed</h1>
       <p class="lead" id="endText"></p>
+      <p class="record hidden" id="endRecord">NEW HIGH SCORE!</p>
       <p class="scoreline" id="endScore"></p>
       <button id="retry" type="button">Stack again</button>
       <p class="credit"><a href="../../index.html">All games</a></p>
@@ -75,6 +76,7 @@
 
   <p id="fail" class="fail hidden">This browser has no WebGL context, so Slab cannot start. <a href="../../index.html">All games</a></p>
 
+  <script src="../shared/highscore.js"></script>
   <script src="../../shared/vendor/three.min.js"></script>
   <script src="../../shared/bloom.js"></script>
   <script src="../../shared/juice.js"></script>

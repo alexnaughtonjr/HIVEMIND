@@ -18,13 +18,14 @@
     <section class="panel" aria-label="Snake game">
       <div class="stats">
         <div><span class="label">Score</span><strong id="score">0</strong></div>
-        <div><span class="label">Best</span><strong id="best">0</strong></div>
+        <div class="stat-best"><span class="label">Best:</span><strong id="best">—</strong></div>
         <div><span class="label">Length</span><strong id="length">3</strong></div>
       </div>
       <div class="board-wrap">
         <canvas id="board" width="480" height="480" tabindex="0" aria-label="Snake board"></canvas>
         <div id="overlay" class="overlay" hidden>
           <h2 id="overlay-title">Ready</h2>
+          <p id="overlay-record" class="record" hidden>NEW HIGH SCORE!</p>
           <p id="overlay-text"></p>
           <button id="overlay-restart" class="primary" type="button">Play again</button>
         </div>
@@ -42,6 +43,7 @@
       <p class="help">Arrows or WASD choose a direction and start the run. A quick second turn is kept for the next step, and a reverse into your tail is ignored. Space pauses. R restarts to the ready screen. Play again deals a fresh board. Swipe the board on a touch screen. Best score stays in this browser.</p>
     </section>
   </main>
+  <script src="../shared/highscore.js"></script>
   <script src="game.js"></script>
 </body>
 </html>
