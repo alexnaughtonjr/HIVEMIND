@@ -32,8 +32,8 @@ Lead a starling murmuration over a reed marsh. Thread eight amber rings, keep th
 ## Run locally
 
 ```bash
-git clone https://github.com/alexnaughtonjr/games.git
-cd games
+git clone https://github.com/alexnaughtonjr/HIVEMIND.git
+cd HIVEMIND
 python3 -m http.server 8080
 ```
 
