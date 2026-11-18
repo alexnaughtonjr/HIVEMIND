@@ -10,8 +10,8 @@
   const LINKS = {
     venmo: 'https://venmo.com/u/alexnaughtonjr',
     x: 'https://x.com/alexnaughtonjr',
-    issues: 'https://github.com/alexnaughtonjr/games/issues/new',
-    repo: 'https://github.com/alexnaughtonjr/games'
+    issues: 'https://github.com/alexnaughtonjr/HIVEMIND/issues/new',
+    repo: 'https://github.com/alexnaughtonjr/HIVEMIND'
   };
   const $ = (s, r=document) => r.querySelector(s);
   const h = (tag, attrs={}, ...kids) => {

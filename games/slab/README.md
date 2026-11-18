@@ -4,7 +4,7 @@ A 3D kiln stack. Drop a sliding glass slab, keep the overlap, and catch the ambe
 
 The slab alternates between the side axis and the depth axis. Anything that hangs off the tower is cut away. A clean miss ends the run. Land almost flush and the tower keeps its full size.
 
-**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/slab/index.html)**
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/slab/index.html)**
 
 Free, no install.
 
@@ -12,7 +12,7 @@ Free, no install.
 
 ## Play
 
-**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/slab/index.html)**
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/slab/index.html)**
 
 Free, no install. WebGL is required. Three.js is the shared copy at `../../shared/vendor/three.min.js`. Bloom comes from `../../shared/bloom.js`, and the drop sounds come from `../../shared/juice.js`. Nothing is loaded from a CDN, and there is no build step.
 

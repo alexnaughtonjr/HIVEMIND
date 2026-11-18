@@ -4,7 +4,7 @@ Free custom game for Alexander Haislip — week two of the weekly free game drop
 
 Chain the right AI prompts, clear glitchy landing-page shards on a neon Primer desk, and deploy before the coffee in the 3D mug runs dry.
 
-**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/vibe-coder/index.html)**
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/vibe-coder/index.html)**
 
 Free, no install.
 
@@ -12,7 +12,7 @@ Free, no install.
 
 ## How to play
 
-**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/vibe-coder/index.html)**
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/vibe-coder/index.html)**
 
 Free, no install. WebGL is required.
 

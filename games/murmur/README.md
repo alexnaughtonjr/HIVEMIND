@@ -2,7 +2,7 @@
 
 Lead a starling murmuration over a reed marsh at dusk. Thread eight amber rings, catch the gold columns of warm air, slip the marsh harriers, and reach the roost oak before the sun sets. The preview is a real flight. Select it for the MP4.
 
-**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/murmur/index.html)**
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/murmur/index.html)**
 
 Free, no install.
 
@@ -10,7 +10,7 @@ Free, no install.
 
 ## Play
 
-**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/murmur/index.html)**
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/murmur/index.html)**
 
 Free, no install. WebGL is required. Three.js is the shared copy at `../../shared/vendor/three.min.js`. Nothing is loaded from a CDN, and there is no build step.
 
