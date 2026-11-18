@@ -25,7 +25,7 @@ No install and no sign-up. The 3D games need WebGL.
 
 [![Murmur gameplay: a starling flock threads amber rings over a dusk marsh](games/murmur/media/preview.gif)](games/murmur/media/gameplay.mp4)
 
-Lead a starling murmuration over a reed marsh. Thread eight amber rings, keep the flock together, and reach the roost oak before the sun sets. The preview is a real flight. Select it for the MP4.
+Lead a starling murmuration over a reed marsh. Thread eight amber rings, catch the gold columns of warm air, slip the marsh harriers, and reach the roost oak before the sun sets. The preview is a real flight. Select it for the MP4.
 
 **Play:** [Play Murmur live](https://raw.githack.com/alexnaughtonjr/games/main/games/murmur/index.html) · [source](games/murmur/)
 
@@ -35,7 +35,7 @@ Lead a starling murmuration over a reed marsh. Thread eight amber rings, keep th
 
 | Preview | Game | What you do | Controls |
 |---|---|---|---|
-| <a href="games/murmur/media/gameplay.mp4"><img src="games/murmur/media/preview.gif" alt="Murmur gameplay" width="180"></a> | [Murmur](https://raw.githack.com/alexnaughtonjr/games/main/games/murmur/index.html) ([source](games/murmur/)) | Lead a starling flock through eight rings and reach the roost before sunset. | WASD or arrows. Mouse or the stick. Space calls. P pauses. |
+| <a href="games/murmur/media/gameplay.mp4"><img src="games/murmur/media/preview.gif" alt="Murmur gameplay" width="180"></a> | [Murmur](https://raw.githack.com/alexnaughtonjr/games/main/games/murmur/index.html) ([source](games/murmur/)) | Lead a starling flock through eight rings, catch the warm air, and reach the roost before sunset. | WASD or arrows. Mouse or the stick. Space calls. P pauses. |
 | <a href="games/fathom/media/gameplay.mp4"><img src="games/fathom/media/preview.gif" alt="Fathom gameplay" width="180"></a> | [Fathom](https://raw.githack.com/alexnaughtonjr/games/main/games/fathom/index.html) ([source](games/fathom/)) | Log one animal from each ocean zone before the lamp goes dark. | WASD or arrows. Drag the stick. Catch the ring. P pauses. |
 | <a href="games/snake/"><img src="games/snake/media/poster.svg" alt="Snake" width="180"></a> | [Snake](https://raw.githack.com/alexnaughtonjr/games/main/games/snake/index.html) ([source](games/snake/)) | Eat the blue pellets. Avoid the walls and your tail. | Arrows or WASD. Swipe or the pad. Space pauses. |
 | <a href="games/memory/"><img src="games/memory/media/poster.svg" alt="Memory Match" width="180"></a> | [Memory Match](https://raw.githack.com/alexnaughtonjr/games/main/games/memory/index.html) ([source](games/memory/)) | Flip eight pairs and finish in as few moves as you can. | Click, or arrows and Enter. |
@@ -52,7 +52,7 @@ cd games
 python3 -m http.server 8080
 ```
 
-Open <http://localhost:8080/>. You can also open [index.html](index.html) and press Play, or open a game folder directly. `npx serve .` serves the same tree. Opening `index.html` from the file system also works for the vendored games. Snake and Memory Match stay fully offline. The 3D games need WebGL. Fathom, Rainline, Uplink, Slab, and Vibe Coder ship a copy of Three.js in the repo. Murmur loads Three.js as an ES module from jsDelivr, so that game needs a network connection and a local server.
+Open <http://localhost:8080/>. You can also open [index.html](index.html) and press Play, or open a game folder directly. `npx serve .` serves the same tree. Opening `index.html` from the file system also works for the vendored games. Snake and Memory Match stay fully offline. The 3D games need WebGL. Fathom, Rainline, Uplink, Slab, Vibe Coder, and Murmur ship a copy of Three.js in the repo. Nothing in those games is loaded from a CDN.
 
 On the collection page, press 1–8 to open Snake, Memory Match, Vibe Coder, Rainline, Uplink, Slab, Fathom, or Murmur.
 
@@ -96,4 +96,4 @@ Each game keeps a personal best in this browser only, on this device. The number
 | Uplink | Highest score. Each meter climbed is 10, and each core is 100. |
 | Slab | Highest score. Floors, perfect landings, and caught embers. |
 | Fathom | Highest score. Logged animals, plus leftover lamp charge. Hits drain points, so the best is the score at the end of the survey. |
-| Murmur | Highest score. 300 for each ring, then 80 for each starling still flying and 30 for each second of daylight left. |
+| Murmur | Highest score. 300 for each ring and 80 for each warm column, then 80 for each starling still flying and 30 for each second of daylight left. A harrier scatters three starlings and steals daylight. |

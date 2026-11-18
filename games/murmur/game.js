@@ -10,6 +10,11 @@ const GATE_BIRDS = 4;
 const SNAG_BIRDS = 5;
 const GATE_SCORE = 300;
 const GATE_R = 3.45;
+const POCKET_SCORE = 80;
+const POCKET_SUN = 2.6;
+const POCKET_R = 2.55;
+const HARRIER_BIRDS = 3;
+const HARRIER_SUN = 2.2;
 const Y_MIN = 2.7;
 const Y_MAX = 14.2;
 const X_MAX = 16;
@@ -24,6 +29,22 @@ const GATES = [
   { x: -11, y: 8.6, z: -496 },
   { x: -2.6, y: 6.2, z: -590 },
   { x: 1.2, y: 8, z: -684 }
+];
+
+const POCKETS = [
+  { x: 2.35, y: 8.9, z: 3.2 },
+  { x: 6.5, y: 9.85, z: -70 },
+  { x: 8.4, y: 8.2, z: -188 },
+  { x: -6.4, y: 9.4, z: -430 },
+  { x: 2.2, y: 8.6, z: -612 }
+];
+
+const HARRIERS = [
+  { z: -108, y: 7.15, span: 12, speed: 0.42, phase: 0.65 },
+  { z: -236, y: 8.7, span: 13, speed: 0.34, phase: 1.15 },
+  { z: -388, y: 6.9, span: 12, speed: 0.4, phase: 2.2 },
+  { z: -524, y: 8.5, span: 14, speed: 0.31, phase: 0.4 },
+  { z: -648, y: 7.3, span: 11, speed: 0.46, phase: 1.8 }
 ];
 
 const POSTS = [
@@ -90,6 +111,10 @@ function rng(seed) {
 
 function clamp(v, a, b) {
   return Math.max(a, Math.min(b, v));
+}
+
+function harrierX(h, time) {
+  return Math.sin(time * h.speed * Math.PI * 2 + h.phase) * h.span;
 }
 
 function showFail(message) {
@@ -217,6 +242,25 @@ function thud() {
   osc.stop(t + 0.24);
 }
 
+function shriek() {
+  if (muted) return;
+  const ac = audio();
+  if (!ac) return;
+  const t = ac.currentTime;
+  const osc = ac.createOscillator();
+  const g = ac.createGain();
+  osc.type = "sawtooth";
+  osc.frequency.setValueAtTime(720, t);
+  osc.frequency.exponentialRampToValueAtTime(210, t + 0.28);
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(0.028, t + 0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.32);
+  osc.connect(g);
+  g.connect(ac.destination);
+  osc.start(t);
+  osc.stop(t + 0.34);
+}
+
 function mobileGpu() {
   return document.body.classList.contains("touch") || window.innerWidth < 820;
 }
@@ -338,6 +382,8 @@ function boot() {
   const gates = buildGates(scene, soft);
   const gateLight = new THREE.PointLight(0xffaa55, 22, 32, 2);
   scene.add(gateLight);
+  const pockets = buildPockets(scene, soft);
+  const harriers = buildHarriers(scene, soft);
 
   const birds = buildBirds(scene);
   const far = buildFarFlock(scene);
@@ -362,6 +408,10 @@ function boot() {
     birds: START_BIRDS,
     score: 0,
     gates: 0,
+    pockets: 0,
+    ringPts: 0,
+    warmPts: 0,
+    flight: 0,
     sun: SUN_SECONDS,
     stall: 0,
     hurt: 0,
@@ -461,6 +511,7 @@ function boot() {
     $("best").textContent = bestText(shown);
     $("birds").textContent = String(state.birds);
     $("rings").textContent = `${state.gates}/8`;
+    $("warm").textContent = String(state.pockets);
     const day = clamp(state.sun / SUN_SECONDS, 0, 1);
     const bar = $("sunBar");
     bar.style.transform = `scaleX(${day})`;
@@ -489,6 +540,10 @@ function boot() {
     state.score = 0;
     state.bestAtStart = state.best;
     state.gates = 0;
+    state.pockets = 0;
+    state.ringPts = 0;
+    state.warmPts = 0;
+    state.flight = 0;
     state.sun = SUN_SECONDS;
     state.stall = 0;
     state.hurt = 0;
@@ -505,6 +560,15 @@ function boot() {
       g.inner.material.color.setHex(0x9ecbff);
       g.glow.material.opacity = 0.4;
     }
+    for (const p of pockets) {
+      p.taken = false;
+      p.ring.material.color.setHex(0xffe1a8);
+      p.glow.material.opacity = 0.78;
+      p.column.material.opacity = 0.28;
+      if (p.sheet) p.sheet.material.opacity = 0.34;
+      p.group.scale.setScalar(1);
+    }
+    for (const h of harriers) h.struck = false;
     resetFlockPositions();
     snapCam = true;
     setMode("play");
@@ -535,6 +599,7 @@ function boot() {
     state.birds = Math.min(MAX_BIRDS, state.birds + GATE_BIRDS);
     const gained = state.birds - before;
     state.score += GATE_SCORE;
+    state.ringPts += GATE_SCORE;
     g.ring.material.color.setHex(0x7ee787);
     g.inner.material.color.setHex(0x3fb950);
     g.glow.material.opacity = 0.15;
@@ -549,18 +614,48 @@ function boot() {
     }
   }
 
+  function takePocket(p) {
+    p.taken = true;
+    state.pockets += 1;
+    state.score += POCKET_SCORE;
+    state.warmPts += POCKET_SCORE;
+    state.sun = Math.min(SUN_SECONDS, state.sun + POCKET_SUN);
+    p.ring.material.color.setHex(0x7ee787);
+    p.glow.material.opacity = 0.08;
+    p.column.material.opacity = 0.04;
+    if (p.sheet) p.sheet.material.opacity = 0.05;
+    say("Warm air");
+    chirp(490, 0.18, 0.04);
+    burst(p.x, p.y, p.z, 0xffe1a8, 20, -0.6);
+  }
+
+  function rake(h) {
+    h.struck = true;
+    const loss = Math.min(HARRIER_BIRDS, state.birds);
+    state.birds -= loss;
+    state.sun = Math.max(0, state.sun - HARRIER_SUN);
+    state.stall = 0.32;
+    state.hurt = 0.95;
+    state.shake = reduceMotion ? 0 : 0.42;
+    state.flash = 0.38;
+    say("Harrier");
+    shriek();
+    burst(state.x, state.y, state.z, 0x8a3a22, 16, 2.6);
+    if (state.birds <= 0) finish(false, "birds");
+  }
+
   function finish(won, reason) {
     if (state.mode === "end") return;
     let total = state.score;
-    let detail = `${state.gates} rings · ${state.score} pts`;
+    let detail = `Rings ${state.ringPts} · Warm ${state.warmPts}`;
     if (won) {
       const flockBonus = state.birds * 80;
       const sunBonus = Math.ceil(state.sun * 30);
       total += flockBonus + sunBonus;
-      detail = `Rings ${state.score} · Flock ${flockBonus} · Daylight ${sunBonus}`;
+      detail = `Rings ${state.ringPts} · Warm ${state.warmPts} · Flock ${flockBonus} · Daylight ${sunBonus}`;
       $("endKicker").textContent = "roost";
       $("endTitle").textContent = "The roost holds";
-      $("endText").textContent = `You brought ${state.birds} starling${state.birds === 1 ? "" : "s"} home and threaded ${state.gates} of 8 rings.`;
+      $("endText").textContent = `You brought ${state.birds} starling${state.birds === 1 ? "" : "s"} home, threaded ${state.gates} of 8 rings, and caught ${state.pockets} warm column${state.pockets === 1 ? "" : "s"}.`;
       chirp(520, 0.28, 0.05);
       setTimeout(() => chirp(780, 0.22, 0.04), 120);
     } else if (reason === "sun") {
@@ -611,6 +706,7 @@ function boot() {
     const prevZ = state.z;
     const speed = (state.stall > 0 ? SPEED * 0.25 : SPEED) * surge;
     state.z -= speed * dt;
+    state.flight += dt;
     if (state.stall > 0) state.stall -= dt;
     if (state.hurt > 0) state.hurt -= dt;
     state.sun -= dt;
@@ -632,6 +728,16 @@ function boot() {
       }
     }
 
+    if (state.mode !== "end") {
+      for (const p of pockets) {
+        if (p.taken) continue;
+        const dx = state.x - p.x;
+        const dy = state.y - p.y;
+        const dz = state.z - p.z;
+        if (dx * dx + dy * dy + dz * dz <= POCKET_R * POCKET_R) takePocket(p);
+      }
+    }
+
     if (state.mode !== "end" && state.hurt <= 0) {
       const hitR = state.call > 0 ? 0.72 : 1.05;
       for (const p of posts) {
@@ -639,6 +745,20 @@ function boot() {
         const dz = state.z - p.z;
         if (dx * dx + dz * dz <= hitR * hitR && state.y < p.h) {
           snag();
+          break;
+        }
+      }
+    }
+
+    if (state.mode !== "end" && state.hurt <= 0) {
+      for (const h of harriers) {
+        if (h.struck) continue;
+        const dx = (state.x - harrierX(h, state.flight)) / 2.15;
+        const dy = state.y - h.y;
+        const dz = (state.z - h.z) / 1.45;
+        const limit = state.call > 0 ? 0.62 : 1;
+        if (dx * dx + dy * dy + dz * dz <= limit) {
+          rake(h);
           break;
         }
       }
@@ -749,6 +869,29 @@ function boot() {
     }
     if (next) gateLight.position.set(next.x, next.y, next.z);
     gateLight.intensity = next ? 24 : 0;
+
+    const patrol = state.mode === "title" ? anim * 0.25 : state.flight;
+    for (const p of pockets) {
+      const pulse = p.taken ? 0.72 : 1 + Math.sin(t * 3.1 + p.z) * 0.06;
+      p.group.scale.setScalar(pulse);
+      p.ring.rotation.z = t * 0.9;
+      p.ring.rotation.x = Math.sin(t * 0.7 + p.x) * 0.35;
+      if (!p.taken) {
+        p.glow.material.opacity = 0.78 + Math.sin(t * 4.2 + p.z) * 0.14;
+        p.column.material.opacity = 0.28 + Math.sin(t * 2.2 + p.x) * 0.05;
+        if (p.sheet) p.sheet.material.opacity = 0.34 + Math.sin(t * 3 + p.z) * 0.06;
+      }
+    }
+    for (const h of harriers) {
+      const x = harrierX(h, patrol);
+      const dir = Math.cos(patrol * h.speed * Math.PI * 2 + h.phase);
+      h.group.position.set(x, h.y + Math.sin(t * 2.4 + h.phase) * 0.18, h.z);
+      h.group.rotation.y = dir >= 0 ? -Math.PI / 2 : Math.PI / 2;
+      h.group.rotation.z = dir * -0.35;
+      const flap = Math.sin(t * 8.5 + h.phase) * 0.42;
+      h.wingL.rotation.z = flap;
+      h.wingR.rotation.z = -flap;
+    }
 
     heron.userData.neck.rotation.z = Math.sin(t * 0.7) * 0.12;
     heron.userData.neck.rotation.x = Math.sin(t * 0.45) * 0.06;
@@ -1122,13 +1265,13 @@ function buildReeds(scene, rand) {
     const x = side * band;
     const h = 0.9 + rand() * 2.6;
     const rot = rand() * Math.PI;
-    data.push({ x, z, h, rot, phase: rand() * 6.28 });
+    color.set(rand() > 0.8 ? 0x5a4a28 : rand() > 0.4 ? 0x3e5228 : 0x24341c);
+    data.push({ x, z, h, rot, phase: rand() * 6.28, tint: color.getHex() });
     dummy.position.set(x, 0, z);
     dummy.scale.set(1, h, 1);
     dummy.rotation.y = rot;
     dummy.updateMatrix();
     mesh.setMatrixAt(i, dummy.matrix);
-    color.set(rand() > 0.8 ? 0x5a4a28 : rand() > 0.4 ? 0x3e5228 : 0x24341c);
     mesh.setColorAt(i, color);
   }
   mesh.instanceColor.needsUpdate = true;
@@ -1149,7 +1292,7 @@ function buildReeds(scene, rand) {
     dummy.rotation.set(0, 0, 0);
     dummy.updateMatrix();
     cross.setMatrixAt(i, dummy.matrix);
-    cross.setColorAt(i, color);
+    cross.setColorAt(i, color.setHex(data[i].tint));
   }
   cross.instanceColor.needsUpdate = true;
   scene.add(cross);
@@ -1306,6 +1449,120 @@ function buildGates(scene, soft) {
     gates.push({ ...spec, group, ring, inner, glow, cleared: false });
   }
   return gates;
+}
+
+function buildPockets(scene, soft) {
+  const pockets = [];
+  for (const spec of POCKETS) {
+    const group = new THREE.Group();
+    const column = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.9, 1.65, 12, 8, 1, true),
+      new THREE.MeshBasicMaterial({
+        color: 0xffc56a,
+        transparent: true,
+        opacity: 0.28,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+        toneMapped: false
+      })
+    );
+    column.position.y = -2.2;
+    group.add(column);
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(POCKET_R, 0.07, 6, 22),
+      new THREE.MeshBasicMaterial({ color: 0xffe1a8, toneMapped: false })
+    );
+    group.add(ring);
+    const glow = new THREE.Sprite(new THREE.SpriteMaterial({
+      map: soft,
+      color: 0xffc56a,
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      fog: false,
+      opacity: 0.62,
+      toneMapped: false
+    }));
+    glow.scale.set(8.4, 13, 1);
+    glow.material.opacity = 0.78;
+    group.add(glow);
+    const sheetMat = new THREE.MeshBasicMaterial({
+      color: 0xffd48a,
+      transparent: true,
+      opacity: 0.34,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      toneMapped: false
+    });
+    const sheet = new THREE.Mesh(new THREE.PlaneGeometry(1.6, 10), sheetMat);
+    sheet.position.y = -1.6;
+    const sheetB = new THREE.Mesh(new THREE.PlaneGeometry(1.6, 10), sheetMat);
+    sheetB.position.y = -1.6;
+    sheetB.rotation.y = Math.PI / 2;
+    group.add(sheet, sheetB);
+    group.position.set(spec.x, spec.y, spec.z);
+    scene.add(group);
+    pockets.push({ ...spec, group, column, ring, glow, sheet, taken: false });
+  }
+  return pockets;
+}
+
+function buildHarriers(scene, soft) {
+  const harriers = [];
+  for (const spec of HARRIERS) {
+    const bird = makeHarrier(soft);
+    scene.add(bird.group);
+    const lane = new THREE.Mesh(
+      new THREE.BoxGeometry(spec.span * 2, 0.16, 0.14),
+      new THREE.MeshBasicMaterial({ color: 0xff5a3c, transparent: true, opacity: 0.82, toneMapped: false, depthWrite: false })
+    );
+    lane.position.set(0, spec.y, spec.z);
+    scene.add(lane);
+    harriers.push({ ...spec, group: bird.group, wingL: bird.wingL, wingR: bird.wingR, lane, struck: false });
+  }
+  return harriers;
+}
+
+function makeHarrier(soft) {
+  const g = new THREE.Group();
+  const dark = new THREE.MeshBasicMaterial({ color: 0x140c0a, side: THREE.DoubleSide });
+  const rust = new THREE.MeshBasicMaterial({ color: 0x8a3418, side: THREE.DoubleSide });
+  const pale = new THREE.MeshBasicMaterial({ color: 0xf0d7b0, side: THREE.DoubleSide });
+  const body = new THREE.Mesh(new THREE.SphereGeometry(0.34, 8, 6), dark);
+  body.scale.set(0.55, 0.4, 1.45);
+  g.add(body);
+  const wingL = new THREE.Mesh(new THREE.PlaneGeometry(1.7, 0.46), dark);
+  wingL.position.set(-1.05, 0.04, 0.02);
+  const wingR = new THREE.Mesh(new THREE.PlaneGeometry(1.7, 0.46), dark);
+  wingR.position.set(1.05, 0.04, 0.02);
+  g.add(wingL, wingR);
+  const underL = new THREE.Mesh(new THREE.PlaneGeometry(1.15, 0.22), pale);
+  underL.position.set(-0.85, -0.02, 0.04);
+  const underR = underL.clone();
+  underR.position.x = 0.85;
+  g.add(underL, underR);
+  const tail = new THREE.Mesh(new THREE.PlaneGeometry(0.28, 0.55), rust);
+  tail.position.set(0, 0.04, 0.62);
+  g.add(tail);
+  const beak = new THREE.Mesh(new THREE.ConeGeometry(0.05, 0.28, 5), rust);
+  beak.rotation.x = Math.PI / 2;
+  beak.position.set(0, 0.02, -0.62);
+  g.add(beak);
+  const mark = new THREE.Sprite(new THREE.SpriteMaterial({
+    map: soft,
+    color: 0xff4d2e,
+    transparent: true,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    fog: false,
+    opacity: 0.45,
+    toneMapped: false
+  }));
+  mark.scale.set(2.4, 2.4, 1);
+  g.add(mark);
+  g.scale.setScalar(1.28);
+  return { group: g, wingL, wingR };
 }
 
 function buildBirds(scene) {
