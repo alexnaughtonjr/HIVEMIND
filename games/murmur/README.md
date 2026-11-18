@@ -6,7 +6,7 @@ Lead a starling murmuration over a reed marsh at dusk. Thread eight amber rings,
 
 Free, no install.
 
-[![Murmur gameplay: a starling flock threads amber rings over a dusk marsh](media/preview.gif)](media/gameplay.mp4)
+[![Murmur gameplay: the flock climbs through a gold column of warm air, then threads an amber ring](media/preview.gif)](media/gameplay.mp4)
 
 ## Play
 

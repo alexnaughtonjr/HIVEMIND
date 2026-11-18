@@ -23,7 +23,7 @@ No install and no sign-up. The 3D games need WebGL.
 
 ### Murmur
 
-[![Murmur gameplay: a starling flock threads amber rings over a dusk marsh](games/murmur/media/preview.gif)](games/murmur/media/gameplay.mp4)
+[![Murmur gameplay: the flock climbs through a gold column of warm air, then threads an amber ring](games/murmur/media/preview.gif)](games/murmur/media/gameplay.mp4)
 
 Lead a starling murmuration over a reed marsh. Thread eight amber rings, catch the gold columns of warm air, slip the marsh harriers, and reach the roost oak before the sun sets. The preview is a real flight. Select it for the MP4.
 
@@ -35,7 +35,7 @@ Lead a starling murmuration over a reed marsh. Thread eight amber rings, catch t
 
 | Preview | Game | What you do | Controls |
 |---|---|---|---|
-| <a href="games/murmur/media/gameplay.mp4"><img src="games/murmur/media/preview.gif" alt="Murmur gameplay" width="180"></a> | [Murmur](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/murmur/index.html) ([source](games/murmur/)) | Lead a starling flock through eight rings, catch the warm air, and reach the roost before sunset. | WASD or arrows. Mouse or the stick. Space calls. P pauses. |
+| <a href="games/murmur/media/gameplay.mp4"><img src="games/murmur/media/preview.gif" alt="Murmur gameplay: warm air, then an amber ring" width="180"></a> | [Murmur](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/murmur/index.html) ([source](games/murmur/)) | Lead a starling flock through eight rings, catch the warm air, and reach the roost before sunset. | WASD or arrows. Mouse or the stick. Space calls. P pauses. |
 | <a href="games/fathom/media/gameplay.mp4"><img src="games/fathom/media/preview.gif" alt="Fathom gameplay" width="180"></a> | [Fathom](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/fathom/index.html) ([source](games/fathom/)) | Log one animal from each ocean zone before the lamp goes dark. | WASD or arrows. Drag the stick. Catch the ring. P pauses. |
 | <a href="games/snake/"><img src="games/snake/media/poster.svg" alt="Snake" width="180"></a> | [Snake](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/snake/index.html) ([source](games/snake/)) | Eat the blue pellets. Avoid the walls and your tail. | Arrows or WASD. Swipe or the pad. Space pauses. |
 | <a href="games/memory/"><img src="games/memory/media/poster.svg" alt="Memory Match" width="180"></a> | [Memory Match](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/memory/index.html) ([source](games/memory/)) | Flip eight pairs and finish in as few moves as you can. | Click, or arrows and Enter. |
