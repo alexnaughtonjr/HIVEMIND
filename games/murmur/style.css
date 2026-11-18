@@ -302,6 +302,12 @@ button.ghost:hover { background: #1c2128; }
   letter-spacing: 0.04em;
 }
 
+.meters .warm-stat,
+.meters .warm-stat b {
+  color: #e3b341;
+  font-weight: 700;
+}
+
 .meters .best-stat b { font-size: 18px; }
 
 .record {

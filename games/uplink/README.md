@@ -4,7 +4,7 @@ Free custom game for Alexander Haislip. A 3D courier climb up a dark relay shaft
 
 Jump a generated service stair cut into the shaft wall, pocket the blue cores, and land on the green relay pad. Striped lifts carry you, gust vents shove sideways, and green rings take a grapple zip. Missing a ledge ends the run.
 
-**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/uplink/index.html)**
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/uplink/index.html)**
 
 Free, no install.
 
@@ -12,7 +12,7 @@ Free, no install.
 
 ## Play
 
-**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/uplink/index.html)**
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/uplink/index.html)**
 
 Free, no install. WebGL is required. Three.js is the shared copy at `../../shared/vendor/three.min.js`, and bloom comes from `../../shared/bloom.js`. Nothing is loaded from a CDN, and there is no build step.
 

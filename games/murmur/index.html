@@ -2,7 +2,7 @@
 <html lang="en" class="play">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
   <meta name="theme-color" content="#0d1117">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
@@ -12,12 +12,12 @@
   <meta property="og:title" content="Murmur">
   <meta property="og:description" content="Lead a starling flock through amber rings over a dusk marsh and reach the roost before the sun sets.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://raw.githack.com/alexnaughtonjr/games/main/games/murmur/index.html">
-  <meta property="og:image" content="https://raw.githubusercontent.com/alexnaughtonjr/games/main/games/murmur/media/og.png">
+  <meta property="og:url" content="https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/murmur/index.html">
+  <meta property="og:image" content="https://raw.githubusercontent.com/alexnaughtonjr/HIVEMIND/main/games/murmur/media/og.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Murmur">
   <meta name="twitter:description" content="Lead a starling flock through amber rings over a dusk marsh and reach the roost before the sun sets.">
-  <meta name="twitter:image" content="https://raw.githubusercontent.com/alexnaughtonjr/games/main/games/murmur/media/og.png">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/alexnaughtonjr/HIVEMIND/main/games/murmur/media/og.png">
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="../../shared/mobile.css">
   <link rel="stylesheet" href="style.css">
@@ -35,6 +35,7 @@
       <span class="best-stat"><b id="best">BEST: —</b></span>
       <span>birds <b id="birds">16</b></span>
       <span>rings <b id="rings">0/8</b></span>
+      <span class="warm-stat">warm <b id="warm">0</b></span>
       <span>sun <span class="track"><span id="sunBar"></span></span></span>
       <span id="callLabel">call ready</span>
     </div>
@@ -47,11 +48,11 @@
       <p class="eyebrow">3D dusk flight</p>
       <h1>Murmur</h1>
       <p class="sub">Eight rings</p>
-      <p class="lead">Lead a starling murmuration over a reed marsh. Thread the amber rings, keep the flock together, and reach the roost oak before the sun sets.</p>
+      <p class="lead">Lead a starling murmuration over a reed marsh. Thread the amber rings, catch the gold columns of warm air, and reach the roost oak before the sun sets.</p>
       <ul class="howto">
         <li><kbd>A</kbd> <kbd>D</kbd> or the arrows bank. <kbd>W</kbd> <kbd>S</kbd> climb and dive. Drag the stick, or drag on the marsh.</li>
-        <li>Fly through each amber ring. A ring folds four more starlings into the flock.</li>
-        <li>Dark posts with a red ribbon snag birds. <kbd>Space</kbd> or Call pulls the flock tight for a short slip.</li>
+        <li>Fly through each amber ring. A ring folds four more starlings into the flock. A gold column gives daylight.</li>
+        <li>Dark posts with a red ribbon snag birds. A marsh harrier patrols each red line and rakes the flock. <kbd>Space</kbd> or Call pulls the flock tight for a short slip.</li>
         <li>Reach the oak with starlings still beside you. <kbd>P</kbd> pauses. <kbd>R</kbd> starts over.</li>
       </ul>
       <button id="start" type="button" disabled>Loading the marsh…</button>
@@ -60,7 +61,7 @@
     </div>
   </section>
 
-  <p id="hint" class="hint hidden">Thread the amber ring.</p>
+  <p id="hint" class="hint hidden">Thread the amber ring. Gold is warm air.</p>
   <p id="callout" class="callout hidden" aria-live="polite"></p>
 
   <div id="touch">

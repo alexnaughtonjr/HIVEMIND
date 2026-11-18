@@ -4,7 +4,7 @@ Free custom game for Alexander Haislip. An original stick vigilante on an origin
 
 Chain strikes between alley crew, counter the red warning over a thug’s head, drop from the stone perch, grapple the glowing rings, glide between roofs, and use a stun disc and a smoke pellet. Green gutter kits on the street restore health when you walk over them while hurt. Clear the block for the win screen.
 
-**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/rainline/index.html)**
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/rainline/index.html)**
 
 Free, no install.
 
@@ -12,7 +12,7 @@ Free, no install.
 
 ## Play
 
-**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/rainline/index.html)**
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/rainline/index.html)**
 
 Free, no install. WebGL is required. Keyboard and mouse.
 

@@ -2,7 +2,7 @@
 
 Steer a snake around a 20×20 board and eat the blue pellets. Each pellet is worth 10 points, and the snake speeds up as the score climbs. Hitting a wall or your own tail ends the run. Filling the board wins it.
 
-**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/snake/index.html)**
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/snake/index.html)**
 
 Free, no install.
 
@@ -10,7 +10,7 @@ Free, no install.
 
 ## Play
 
-**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/snake/index.html)**
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/snake/index.html)**
 
 Free, no install.
 

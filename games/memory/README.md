@@ -2,7 +2,7 @@
 
 Sixteen cards, eight pairs. Flip two at a time and remember where each shape landed. The clock starts on the first flip.
 
-**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/memory/index.html)**
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/memory/index.html)**
 
 Free, no install.
 
@@ -10,7 +10,7 @@ Free, no install.
 
 ## Play
 
-**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/memory/index.html)**
+**[▶ Play now in your browser](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/memory/index.html)**
 
 Free, no install.
 
