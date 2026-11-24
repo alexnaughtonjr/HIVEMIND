@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" class="play">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#0d1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="description" content="Roll a hedgehog through a golden-hour orchard. Apples stick to your spines. Bank them through the wicker rings before the sun sets.">
+  <title>Bramble</title>
+  <meta property="og:title" content="Bramble">
+  <meta property="og:description" content="Roll a hedgehog through a golden-hour orchard. Apples stick to your spines. Bank them through the wicker rings before the sun sets.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://raw.githack.com/alexnaughtonjr/games/main/games/bramble/index.html">
+  <meta property="og:image" content="https://raw.githubusercontent.com/alexnaughtonjr/HIVEMIND/main/games/bramble/media/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Bramble">
+  <meta name="twitter:description" content="Roll a hedgehog through a golden-hour orchard. Apples stick to your spines. Bank them through the wicker rings before the sun sets.">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/alexnaughtonjr/HIVEMIND/main/games/bramble/media/og.png">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../../shared/mobile.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="modal">
+  <canvas id="view" aria-label="Bramble orchard"></canvas>
+  <div id="vignette"></div>
+  <div id="flash"></div>
+  <a id="home" class="corner" href="../../index.html">All games</a>
+
+  <header id="hud" hidden>
+    <div class="brand">bramble <span>/ dusk</span></div>
+    <div class="meters">
+      <span>score <b id="score">0</b></span>
+      <span class="best-stat"><b id="best">BEST: —</b></span>
+      <span>spines <b id="spines">0/8</b></span>
+      <span>rings <b id="rings">0/5</b></span>
+      <span>sun <span class="track"><span id="sunBar"></span></span></span>
+    </div>
+    <button id="muteBtn" class="ghost" type="button" aria-pressed="false">Sound</button>
+    <button id="pauseBtn" class="ghost" type="button" aria-pressed="false">Pause</button>
+  </header>
+
+  <section id="title" class="overlay">
+    <div class="card">
+      <p class="eyebrow">3D orchard roll</p>
+      <h1>Bramble</h1>
+      <p class="sub">Five rings</p>
+      <p class="lead">Roll a hedgehog through a golden-hour orchard. Apples stick to your spines. Shake them through the wicker rings, hop the briars, and reach the burrow before the sun sets.</p>
+      <ul class="howto">
+        <li><kbd>A</kbd> <kbd>D</kbd> or the arrows steer. <kbd>W</kbd> speeds up. <kbd>S</kbd> slows down. Drag the stick, or drag the orchard.</li>
+        <li>Roll over apples and they stick. A gold apple scores more when you bank it, and it gives a little daylight back.</li>
+        <li>A glowing ring banks every apple on your spines. Four or more at once pays a burst bonus.</li>
+        <li>Dark briars knock apples loose. <kbd>Space</kbd> or Hop jumps them. Reach the warm burrow before the sun meter empties.</li>
+        <li><kbd>P</kbd> pauses. <kbd>R</kbd> starts over. <kbd>M</kbd> mutes.</li>
+      </ul>
+      <button id="start" type="button" disabled>Loading the orchard…</button>
+      <p id="titleBest" class="best-line">BEST: —</p>
+      <p class="credit"><a href="https://raw.githack.com/alexnaughtonjr/games/main/games/bramble/index.html">Play free in the browser</a> · <a href="../../index.html">All games</a></p>
+    </div>
+  </section>
+
+  <p id="hint" class="hint hidden">Apples stick. Glowing rings bank them.</p>
+  <p id="callout" class="callout hidden" aria-live="polite"></p>
+
+  <div id="touch">
+    <div id="stick" role="slider" aria-label="Steer" aria-valuemin="-1" aria-valuemax="1" aria-valuenow="0">
+      <div id="nub"></div>
+    </div>
+    <button id="hopBtn" type="button">Hop</button>
+  </div>
+
+  <section id="pause" class="overlay hidden">
+    <div class="card">
+      <p class="eyebrow">paused</p>
+      <h1>Spines still</h1>
+      <p class="lead">The orchard holds its breath. Resume the roll, or start again from the first apple.</p>
+      <div class="pause-actions">
+        <button id="resume" type="button">Resume</button>
+        <button id="restart" class="ghost" type="button">Restart</button>
+        <a href="../../index.html">All games</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="end" class="overlay hidden">
+    <div class="card">
+      <p class="eyebrow" id="endKicker">burrow</p>
+      <h1 id="endTitle">Home before dark</h1>
+      <p class="lead" id="endText"></p>
+      <p class="record hidden" id="endRecord">NEW HIGH SCORE!</p>
+      <p class="scoreline" id="endScore"></p>
+      <button id="retry" type="button">Roll again</button>
+      <p class="credit"><a href="../../index.html">All games</a></p>
+    </div>
+  </section>
+
+  <p id="fail" class="fail hidden">This browser has no WebGL context, so Bramble cannot start. <a href="../../index.html">All games</a></p>
+
+  <script src="../shared/highscore.js"></script>
+  <script src="../../shared/mobile.js"></script>
+  <script src="../../shared/vendor/three.min.js"></script>
+  <script src="../../shared/bloom.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

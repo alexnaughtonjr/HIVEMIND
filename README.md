@@ -8,6 +8,7 @@ https://thehivemindsolutions.com/
 
 **[▶ Play the full collection](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/index.html)**
 
+- [Bramble](https://raw.githack.com/alexnaughtonjr/games/main/games/bramble/index.html)
 - [Murmur](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/murmur/index.html)
 - [Fathom](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/fathom/index.html)
 - [Snake](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/snake/index.html)
@@ -21,20 +22,21 @@ No install and no sign-up. The 3D games need WebGL.
 
 ## Game of the week
 
-### Murmur
+### Bramble
 
-[![Murmur gameplay: the flock climbs through a gold column of warm air, then threads an amber ring](games/murmur/media/preview.gif)](games/murmur/media/gameplay.mp4)
+[![Bramble gameplay: apples stick to the hedgehog, then burst through a wicker ring](games/bramble/media/preview.gif)](games/bramble/media/gameplay.mp4)
 
-Lead a starling murmuration over a reed marsh. Thread eight amber rings, catch the gold columns of warm air, slip the marsh harriers, and reach the roost oak before the sun sets. The preview is a real flight. Select it for the MP4.
+Roll a hedgehog through a golden-hour orchard. Apples stick to your spines. Shake them through five wicker rings, hop the briars, and reach the burrow before the sun sets. The preview is a real roll. Select it for the MP4.
 
-**Play:** [Play Murmur live](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/murmur/index.html) · [source](games/murmur/)
+**Play:** [Play Bramble free in your browser](https://raw.githack.com/alexnaughtonjr/games/main/games/bramble/index.html) · [source](games/bramble/)
 
-**Controls:** `A` `D` or the arrows bank. `W` `S` climb and dive. Move the mouse, or drag the stick. Fly through the amber rings and dodge the posts with red ribbons. `Space` calls the flock tight. `P` pauses. `R` starts over.
+**Controls:** `A` `D` or the arrows steer. `W` speeds up. `S` slows down. Drag the stick, or drag the orchard. Roll over apples, then through a glowing ring. `Space` hops the briars. `P` pauses. `R` starts over.
 
 ## All games
 
 | Preview | Game | What you do | Controls |
 |---|---|---|---|
+| <a href="games/bramble/media/gameplay.mp4"><img src="games/bramble/media/preview.gif" alt="Bramble gameplay: apples stick, then a wicker ring" width="180"></a> | [Bramble](https://raw.githack.com/alexnaughtonjr/games/main/games/bramble/index.html) ([source](games/bramble/)) | Roll a hedgehog, stick apples on your spines, and bank them through five rings before sunset. | WASD or the stick. Space hops. P pauses. |
 | <a href="games/murmur/media/gameplay.mp4"><img src="games/murmur/media/preview.gif" alt="Murmur gameplay: warm air, then an amber ring" width="180"></a> | [Murmur](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/murmur/index.html) ([source](games/murmur/)) | Lead a starling flock through eight rings, catch the warm air, and reach the roost before sunset. | WASD or arrows. Mouse or the stick. Space calls. P pauses. |
 | <a href="games/fathom/media/gameplay.mp4"><img src="games/fathom/media/preview.gif" alt="Fathom gameplay" width="180"></a> | [Fathom](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/fathom/index.html) ([source](games/fathom/)) | Log one animal from each ocean zone before the lamp goes dark. | WASD or arrows. Drag the stick. Catch the ring. P pauses. |
 | <a href="games/snake/"><img src="games/snake/media/poster.svg" alt="Snake" width="180"></a> | [Snake](https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/games/snake/index.html) ([source](games/snake/)) | Eat the blue pellets. Avoid the walls and your tail. | Arrows or WASD. Swipe or the pad. Space pauses. |
@@ -52,9 +54,9 @@ cd HIVEMIND
 python3 -m http.server 8080
 ```
 
-Open <http://localhost:8080/>. You can also open [index.html](index.html) and press Play, or open a game folder directly. `npx serve .` serves the same tree. Opening `index.html` from the file system also works for the vendored games. Snake and Memory Match stay fully offline. The 3D games need WebGL. Fathom, Rainline, Uplink, Slab, Vibe Coder, and Murmur ship a copy of Three.js in the repo. Nothing in those games is loaded from a CDN.
+Open <http://localhost:8080/>. You can also open [index.html](index.html) and press Play, or open a game folder directly. `npx serve .` serves the same tree. Opening `index.html` from the file system also works for the vendored games. Snake and Memory Match stay fully offline. The 3D games need WebGL. Fathom, Rainline, Uplink, Slab, Vibe Coder, Murmur, and Bramble ship a copy of Three.js in the repo. Nothing in those games is loaded from a CDN.
 
-On the collection page, press 1–8 to open Snake, Memory Match, Vibe Coder, Rainline, Uplink, Slab, Fathom, or Murmur.
+On the collection page, press 1–9 to open Snake, Memory Match, Vibe Coder, Rainline, Uplink, Slab, Fathom, Murmur, or Bramble.
 
 ## Add a Monday game
 
@@ -81,7 +83,7 @@ Pages use the GitHub Primer dark palette:
 - Green accent `#238636`
 - Blue accent `#58a6ff`
 
-Body text uses Inter, then the system UI stack. Titles, scores, and labels use JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace. Snake, Memory Match, Rainline, Uplink, Slab, Fathom, and Murmur do not download fonts. Vibe Coder requests Inter and JetBrains Mono from Google Fonts and falls back to that same stack.
+Body text uses Inter, then the system UI stack. Titles, scores, and labels use JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace. Snake, Memory Match, Rainline, Uplink, Slab, Fathom, Murmur, and Bramble do not download fonts. Vibe Coder requests Inter and JetBrains Mono from Google Fonts and falls back to that same stack.
 
 ## High scores
 
@@ -97,3 +99,4 @@ Each game keeps a personal best in this browser only, on this device. The number
 | Slab | Highest score. Floors, perfect landings, and caught embers. |
 | Fathom | Highest score. Logged animals, plus leftover lamp charge. Hits drain points, so the best is the score at the end of the survey. |
 | Murmur | Highest score. 300 for each ring and 80 for each warm column, then 80 for each starling still flying and 30 for each second of daylight left. A harrier scatters three starlings and steals daylight. |
+| Bramble | Highest score. 100 for each red apple banked and 250 for each gold apple, plus 80 for every apple past the third in one ring. The burrow adds 70 for each second of daylight left and 50 for each apple still on your spines. |

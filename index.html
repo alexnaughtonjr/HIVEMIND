@@ -7,16 +7,16 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="format-detection" content="telephone=no">
-  <meta name="description" content="Small, free browser games. Nothing to install. Play Murmur, Fathom, Snake, and more on your phone.">
+  <meta name="description" content="Small, free browser games. Nothing to install. Play Bramble, Murmur, Fathom, and more on your phone.">
   <title>Games</title>
   <meta property="og:title" content="Games">
-  <meta property="og:description" content="Small, free browser games. Nothing to install. Play Murmur, Fathom, Snake, and more on your phone.">
+  <meta property="og:description" content="Small, free browser games. Nothing to install. Play Bramble, Murmur, Fathom, and more on your phone.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://raw.githack.com/alexnaughtonjr/HIVEMIND/main/index.html">
   <meta property="og:image" content="https://raw.githubusercontent.com/alexnaughtonjr/HIVEMIND/main/media/og.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Games">
-  <meta name="twitter:description" content="Small, free browser games. Nothing to install. Play Murmur, Fathom, Snake, and more on your phone.">
+  <meta name="twitter:description" content="Small, free browser games. Nothing to install. Play Bramble, Murmur, Fathom, and more on your phone.">
   <meta name="twitter:image" content="https://raw.githubusercontent.com/alexnaughtonjr/HIVEMIND/main/media/og.png">
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="shared/mobile.css">
@@ -116,6 +116,11 @@
     }
 
     .week p { margin: 12px 0 0; color: var(--muted); }
+
+    .week p a {
+      color: var(--blue);
+      font-weight: 650;
+    }
 
     .actions {
       display: flex;
@@ -272,17 +277,19 @@
     <p class="lede">Small, free browser games. Nothing to install. A new one lands on Mondays.</p>
 
     <section class="week" aria-labelledby="week-title">
-      <a href="games/murmur/media/gameplay.mp4">
-        <img src="games/murmur/media/preview.gif" alt="Murmur gameplay: the flock climbs through a gold column of warm air, then threads an amber ring">
+      <a href="games/bramble/media/gameplay.mp4">
+        <img src="games/bramble/media/preview.gif" alt="Bramble gameplay: apples stick to the hedgehog, then burst through a wicker ring">
       </a>
       <div class="week-copy">
         <p class="eyebrow">Game of the week</p>
-        <h2 id="week-title">Murmur</h2>
-        <p>Lead a starling murmuration over a reed marsh. Thread the amber rings, catch the warm air, and reach the roost before the sun sets.</p>
-        <p class="card-best" data-slug="murmur" data-legacy="games.murmur.best" hidden>BEST: —</p>
+        <h2 id="week-title">Bramble</h2>
+        <p>Roll a hedgehog through a golden-hour orchard. Apples stick to your spines. Shake them through the wicker rings and reach the burrow before the sun sets.</p>
+        <p><a href="https://raw.githack.com/alexnaughtonjr/games/main/games/bramble/index.html">Play Bramble free in your browser</a></p>
+        <p class="card-best" data-slug="bramble" data-legacy="games.bramble.best" hidden>BEST: —</p>
         <div class="actions">
-          <a class="play" href="games/murmur/index.html">Play</a>
-          <a class="ghost" href="games/murmur/media/gameplay.mp4">Watch the MP4</a>
+          <a class="play" href="https://raw.githack.com/alexnaughtonjr/games/main/games/bramble/index.html">Play free</a>
+          <a class="ghost" href="games/bramble/index.html">Open this copy</a>
+          <a class="ghost" href="games/bramble/media/gameplay.mp4">Watch the MP4</a>
         </div>
       </div>
     </section>
@@ -384,8 +391,20 @@
           </div>
         </a>
       </li>
+      <li>
+        <a class="card" href="games/bramble/index.html" aria-keyshortcuts="9">
+          <img src="games/bramble/media/preview.gif" alt="Bramble gameplay: apples stick, then a wicker ring">
+          <div class="body">
+            <h2>Bramble</h2>
+            <p>Roll a hedgehog through a golden-hour orchard. Stick apples on your spines and bank them through five wicker rings.</p>
+            <span class="card-best" data-slug="bramble" data-legacy="games.bramble.best" hidden>BEST: —</span>
+            <span class="controls"><kbd>9</kbd>WASD or the stick. Space hops.</span>
+            <span class="play-label">Play</span>
+          </div>
+        </a>
+      </li>
     </ul>
-    <footer>Press 1–8 to open a game. Primer dark · #0d1117 / #161b22 · #238636 · #58a6ff</footer>
+    <footer>Press 1–9 to open a game. Primer dark · #0d1117 / #161b22 · #238636 · #58a6ff</footer>
   </main>
   <script src="games/shared/highscore.js"></script>
   <script src="shared/mobile.js"></script>
@@ -415,7 +434,8 @@
       "5": "games/uplink/index.html",
       "6": "games/slab/index.html",
       "7": "games/fathom/index.html",
-      "8": "games/murmur/index.html"
+      "8": "games/murmur/index.html",
+      "9": "games/bramble/index.html"
     };
     document.addEventListener("keydown", (e) => {
       if (e.metaKey || e.ctrlKey || e.altKey || e.repeat) return;
